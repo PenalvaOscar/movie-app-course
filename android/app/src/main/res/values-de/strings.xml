@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="nav_explore">Entdecken</string>
+    <string name="nav_swipe">Swipen</string>
+    <string name="nav_genie">Genie</string>
+    <string name="nav_arcade">Arcade</string>
+    <string name="placeholder_coming_soon">Demnächst verfügbar</string>
+</resources>

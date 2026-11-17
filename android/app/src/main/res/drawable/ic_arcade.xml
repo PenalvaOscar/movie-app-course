@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Encore icon (ICONS.md §1): 24 dp, 2 dp round stroke, tinted from the theme. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#00000000" android:strokeColor="#FF000000" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M7.5,7h9a5,5 0,0 1,4.9,6l-0.7,3.5a2.5,2.5 0,0 1,-4.3,1.2L14.5,15.5h-5l-1.9,2.2a2.5,2.5 0,0 1,-4.3,-1.2L2.6,13a5,5 0,0 1,4.9,-6Z"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FF000000" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M8,9.5v3M6.5,11h3"/>
+    <path android:fillColor="#FF000000" android:pathData="M16,10.2a1,1 0,1 0,0.001 0Z"/>
+    <path android:fillColor="#FF000000" android:pathData="M17.5,12a1,1 0,1 0,0.001 0Z"/>
+</vector>

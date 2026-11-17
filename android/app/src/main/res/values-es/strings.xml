@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_explore">Explorar</string>
+    <string name="nav_swipe">Deslizar</string>
+    <string name="nav_genie">Genio</string>
+    <string name="nav_arcade">Arcade</string>
+    <string name="placeholder_coming_soon">Próximamente</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_back">Atrás</string>
+</resources>

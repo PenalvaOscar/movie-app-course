@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window only (background before Compose draws); visible styling lives in EncoreTheme. -->
+    <style name="Theme.Encore" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/encore_window_background</item>
+    </style>
+</resources>
