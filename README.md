@@ -1,6 +1,6 @@
 # Agentic iOS and Android Development
 
-At [Master.dev](https://master.dev) · By [Maximiliano Firtman](https://firt.dev)
+This project comes from the **Agentic iOS and Android Development** workshop at [Master.dev](https://master.dev) by [Max Firtman](https://firt.dev).
 
 [Workshop slides (PDF)](slides/MasterDev-AgenticMobile.pdf)
 
@@ -137,32 +137,11 @@ For the Claude community emulator plugin, follow the [repository's installation 
 
 ## Using Antigravity
 
-After cloning and switching to `main` as described below, open the repository folder in Antigravity, or run `agy` from its root. Ask the agent to read this README, set up the local API, and understand the UX brief. Keep the API running in a separate terminal during app development. The same repository, branch, and local API workflow applies to all three agents.
+After switching to `main` as described below, open the repository folder in Antigravity, or run `agy` from its root. Ask the agent to read this README, set up the local API, and understand the UX brief. Keep the API running in a separate terminal during app development. The same repository, branch, and local API workflow applies to all three agents.
 
-## Coding agent: acquire the repository and preserve the baseline
+## Coding agent: preserve the baseline
 
-Repository: [firtman/agentic-mobile](https://github.com/firtman/agentic-mobile). Choose one acquisition path.
-
-Fork into your account and clone (usual contributor workflow):
-
-```sh
-gh auth login
-gh repo fork firtman/agentic-mobile --clone
-cd agentic-mobile
-git switch main
-git pull --ff-only origin main
-```
-
-Or clone directly if you have access and do not need a fork:
-
-```sh
-git clone https://github.com/firtman/agentic-mobile.git
-cd agentic-mobile
-git switch main
-git pull --ff-only origin main
-```
-
-For an existing checkout, first check `git status`. Preserve uncommitted work and do not reset or overwrite it. Switch to `main` and fast-forward it from `origin/main` when the working tree is clean. In a fork, `origin` is your fork; use `upstream` (adding the source URL if absent) to fetch later source changes. Make ongoing project changes on `main`.
+For an existing checkout, first check `git status`. Preserve uncommitted work and do not reset or overwrite it. Switch to `main` and fast-forward it from `origin/main` when the working tree is clean. Make ongoing project changes on `main`.
 
 The `initial-state` branch preserves the starting code. Leave it unchanged. Use `main` for ongoing development and future commits. To inspect the starting code, run `git switch initial-state`; return with `git switch main` before making changes. If the branch is not available locally, first run `git fetch origin` and then `git switch --track origin/initial-state`.
 
