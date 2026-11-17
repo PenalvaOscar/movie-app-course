@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notification / small icon: compact spark, white silhouette -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:pathData="M50,6c3,30 14,41 44,44c-30,3 -41,14 -44,44C47,64 36,53 6,50C36,47 47,36 50,6Z" android:fillColor="#FFFFFFFF"/>
+</vector>
