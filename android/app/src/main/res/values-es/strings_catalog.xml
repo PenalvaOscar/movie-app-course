@@ -9,9 +9,4 @@
     <string name="catalog_problem_invalid">Los datos del catálogo llegaron incompletos o dañados. Vuelve a intentarlo. Si sigue pasando, hay que corregir la fuente del catálogo.</string>
     <string name="catalog_problem_storage">Encore no pudo guardar el catálogo en este dispositivo. Libera espacio y vuelve a intentarlo.</string>
     <string name="action_retry">Reintentar</string>
-    <plurals name="explore_movie_count">
-        <item quantity="one">%1$s película en tu catálogo</item>
-        <item quantity="many">%1$s películas en tu catálogo</item>
-        <item quantity="other">%1$s películas en tu catálogo</item>
-    </plurals>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="details_runtime">%1$d min</string>
+    <plurals name="details_votes">
+        <item quantity="one">%1$s vote</item>
+        <item quantity="other">%1$s votes</item>
+    </plurals>
+    <string name="details_rating_caption">Source rating (vote average), not your own</string>
+    <string name="details_synopsis">Synopsis</string>
+    <string name="details_no_synopsis">No synopsis in the source data.</string>
+    <string name="details_director">Director</string>
+    <string name="details_cast">Cast</string>
+    <string name="details_genres">Genres</string>
+    <string name="details_release_date">Release date</string>
+    <string name="details_sources">Sources</string>
+    <string name="details_source_wikipedia">Wikipedia article</string>
+    <string name="details_source_wikipedia_licence">Text from Wikipedia, CC BY-SA 4.0</string>
+    <string name="details_source_kaggle">9,000+ Movies Dataset (Kaggle)</string>
+    <string name="details_source_kaggle_licence">Ratings, votes and release data from this dataset</string>
+    <string name="details_source_other">Source page</string>
+    <string name="details_source_open">Open source link: %1$s</string>
+    <string name="details_images_note">Posters load from the links supplied in the catalog and belong to their rights holders.</string>
+    <string name="details_not_found_title">Movie not available</string>
+    <string name="details_not_found_body">This movie is no longer in your catalog.</string>
+    <string name="details_error_title">Couldn’t open this movie</string>
+    <string name="details_error_body">Something went wrong reading it from this device.</string>
+</resources>

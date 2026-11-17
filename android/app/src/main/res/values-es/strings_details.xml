@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="details_runtime">%1$d min</string>
+    <plurals name="details_votes">
+        <item quantity="one">%1$s voto</item>
+        <item quantity="many">%1$s votos</item>
+        <item quantity="other">%1$s votos</item>
+    </plurals>
+    <string name="details_rating_caption">Valoración de la fuente (media de votos), no la tuya</string>
+    <string name="details_synopsis">Sinopsis</string>
+    <string name="details_no_synopsis">La fuente no incluye sinopsis.</string>
+    <string name="details_director">Dirección</string>
+    <string name="details_cast">Reparto</string>
+    <string name="details_genres">Géneros</string>
+    <string name="details_release_date">Fecha de estreno</string>
+    <string name="details_sources">Fuentes</string>
+    <string name="details_source_wikipedia">Artículo de Wikipedia</string>
+    <string name="details_source_wikipedia_licence">Texto de Wikipedia, CC BY-SA 4.0</string>
+    <string name="details_source_kaggle">9,000+ Movies Dataset (Kaggle)</string>
+    <string name="details_source_kaggle_licence">Valoraciones, votos y fechas de estreno de este dataset</string>
+    <string name="details_source_other">Página de origen</string>
+    <string name="details_source_open">Abrir enlace de la fuente: %1$s</string>
+    <string name="details_images_note">Los pósters se cargan desde los enlaces incluidos en el catálogo y pertenecen a sus titulares.</string>
+    <string name="details_not_found_title">Película no disponible</string>
+    <string name="details_not_found_body">Esta película ya no está en tu catálogo.</string>
+    <string name="details_error_title">No se pudo abrir esta película</string>
+    <string name="details_error_body">Algo falló al leerla desde este dispositivo.</string>
+</resources>

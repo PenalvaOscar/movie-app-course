@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EncoreTheme {
-                CatalogGate { movieCount -> EncoreApp(movieCount) }
+                CatalogGate { EncoreApp() }
             }
         }
     }

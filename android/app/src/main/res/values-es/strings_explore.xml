@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="explore_search_label">Buscar título o director</string>
+    <string name="explore_search_clear">Borrar búsqueda</string>
+    <string name="explore_genre_all">Todos los géneros</string>
+    <string name="explore_genres_label">Filtrar por género</string>
+    <string name="explore_sort_label">Orden: %1$s</string>
+    <string name="explore_sort_popularity">Más populares</string>
+    <string name="explore_sort_rating">Mejor valoradas</string>
+    <string name="explore_sort_newest">Más recientes</string>
+    <string name="explore_sort_title">Título A–Z</string>
+    <plurals name="explore_result_count">
+        <item quantity="one">%1$s película</item>
+        <item quantity="many">%1$s películas</item>
+        <item quantity="other">%1$s películas</item>
+    </plurals>
+    <string name="explore_featured_label">Destacada de hoy</string>
+    <string name="explore_featured_action">Ver detalles</string>
+    <string name="explore_empty_title">Ninguna película coincide</string>
+    <string name="explore_empty_body">Prueba con otro título o director, o quita los filtros.</string>
+    <string name="explore_empty_action">Quitar filtros</string>
+    <string name="explore_error_title">No se pudo leer el catálogo</string>
+    <string name="explore_error_body">Algo falló al leer las películas guardadas en este dispositivo.</string>
+    <string name="explore_detail_placeholder">Elige una película para ver sus detalles.</string>
+    <string name="movie_rating_value">★ %1$s</string>
+    <string name="movie_rating_description">Valoración de la fuente: %1$s de 10</string>
+    <string name="movie_open_details">Abrir detalles</string>
+</resources>

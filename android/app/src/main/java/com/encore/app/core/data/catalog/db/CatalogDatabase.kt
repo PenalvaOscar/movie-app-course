@@ -17,6 +17,11 @@ import androidx.room.withTransaction
 import com.encore.app.core.data.catalog.CatalogImport
 import com.encore.app.core.data.catalog.CatalogOrigin
 import com.encore.app.core.data.catalog.CatalogStore
+import com.encore.app.core.data.catalog.MovieCatalog
+import com.encore.app.core.data.catalog.MovieQuery
+import com.encore.app.core.data.catalog.MovieSort
+import com.encore.app.core.data.catalog.MovieSummary
+import com.encore.app.core.data.catalog.SearchText
 import com.encore.app.core.model.Movie
 import com.encore.app.core.model.Trivia
 import kotlinx.serialization.json.Json
@@ -47,6 +52,9 @@ data class MovieEntity(
     val popularity: Double?,
     val originalLanguage: String?,
     val datasetSourceUrl: String?,
+    /** [SearchText.normalize]d title and director: what Explore search matches against. */
+    val searchTitle: String,
+    val searchDirector: String?,
 )
 
 /** One row per (movie, genre): genre filters and recommendation scoring become indexed joins. */
@@ -128,6 +136,30 @@ interface CatalogDao {
     @Query("SELECT * FROM trivia WHERE id = :id")
     suspend fun trivia(id: String): TriviaEntity?
 
+    // Explore. One query per sort order (Room can't bind ORDER BY); the WHERE clause is identical in all four.
+    // DESC puts NULL last in SQLite, so missing ratings, years and popularity sink to the end.
+
+    @Query("SELECT id, title, year, director, rating, posterUrl FROM movies $EXPLORE_WHERE ORDER BY popularity DESC, id")
+    suspend fun searchByPopularity(pattern: String?, genre: String?): List<MovieSummary>
+
+    @Query("SELECT id, title, year, director, rating, posterUrl FROM movies $EXPLORE_WHERE ORDER BY rating DESC, voteCount DESC, id")
+    suspend fun searchByRating(pattern: String?, genre: String?): List<MovieSummary>
+
+    @Query("SELECT id, title, year, director, rating, posterUrl FROM movies $EXPLORE_WHERE ORDER BY year DESC, releaseDate DESC, id")
+    suspend fun searchByNewest(pattern: String?, genre: String?): List<MovieSummary>
+
+    @Query("SELECT id, title, year, director, rating, posterUrl FROM movies $EXPLORE_WHERE ORDER BY title COLLATE NOCASE, id")
+    suspend fun searchByTitle(pattern: String?, genre: String?): List<MovieSummary>
+
+    @Query("SELECT genre FROM movie_genres GROUP BY genre ORDER BY COUNT(*) DESC, genre")
+    suspend fun genres(): List<String>
+
+    @Query(
+        "SELECT id, title, year, director, rating, posterUrl FROM movies " +
+            "WHERE posterUrl IS NOT NULL AND synopsis != '' ORDER BY popularity DESC, id LIMIT :limit",
+    )
+    suspend fun featuredCandidates(limit: Int): List<MovieSummary>
+
     @Insert suspend fun insertMovies(rows: List<MovieEntity>)
     @Insert suspend fun insertGenres(rows: List<MovieGenreEntity>)
     @Insert suspend fun insertCast(rows: List<MovieCastEntity>)
@@ -141,9 +173,13 @@ interface CatalogDao {
     @Query("DELETE FROM movies") suspend fun clearMovies()
 }
 
+private const val EXPLORE_WHERE =
+    "WHERE (:genre IS NULL OR id IN (SELECT movieId FROM movie_genres WHERE genre = :genre)) " +
+        "AND (:pattern IS NULL OR searchTitle LIKE :pattern ESCAPE '\\' OR searchDirector LIKE :pattern ESCAPE '\\')"
+
 @Database(
     entities = [MovieEntity::class, MovieGenreEntity::class, MovieCastEntity::class, TriviaEntity::class, CatalogMetaEntity::class],
-    version = 1,
+    version = 2, // 2: search columns (Stage 3). Destructive: the next launch re-imports.
     exportSchema = false, // rebuildable; user.db (Stage 4) is the one with exported schemas
 )
 @TypeConverters(CatalogConverters::class)
@@ -202,11 +238,43 @@ class RoomCatalogStore(
     }
 }
 
+/** Explore and Details read the catalog through here; all queries run on Room's own executor. */
+class RoomMovieCatalog(db: CatalogDatabase) : MovieCatalog {
+    private val dao = db.catalogDao()
+
+    override suspend fun genres(): List<String> = dao.genres()
+
+    override suspend fun search(query: MovieQuery): List<MovieSummary> {
+        val pattern = SearchText.likePattern(query.text)
+        return when (query.sort) {
+            MovieSort.POPULARITY -> dao.searchByPopularity(pattern, query.genre)
+            MovieSort.RATING -> dao.searchByRating(pattern, query.genre)
+            MovieSort.NEWEST -> dao.searchByNewest(pattern, query.genre)
+            MovieSort.TITLE -> dao.searchByTitle(pattern, query.genre)
+        }
+    }
+
+    override suspend fun featuredCandidates(limit: Int): List<MovieSummary> = dao.featuredCandidates(limit)
+
+    override suspend fun movie(id: String): Movie? {
+        val row = dao.movie(id) ?: return null
+        return Movie(
+            id = row.id, title = row.title, year = row.year, synopsis = row.synopsis,
+            genres = dao.genresOf(id), director = row.director, cast = dao.castOf(id),
+            runtimeMinutes = row.runtimeMinutes, rating = row.rating, posterUrl = row.posterUrl,
+            backdropUrl = row.backdropUrl, sourceUrl = row.sourceUrl, releaseDate = row.releaseDate,
+            voteCount = row.voteCount, popularity = row.popularity, originalLanguage = row.originalLanguage,
+            datasetSourceUrl = row.datasetSourceUrl,
+        )
+    }
+}
+
 private fun Movie.toEntity() = MovieEntity(
     id = id, title = title, year = year, synopsis = synopsis, director = director,
     runtimeMinutes = runtimeMinutes, rating = rating, posterUrl = posterUrl, backdropUrl = backdropUrl,
     sourceUrl = sourceUrl, releaseDate = releaseDate, voteCount = voteCount, popularity = popularity,
     originalLanguage = originalLanguage, datasetSourceUrl = datasetSourceUrl,
+    searchTitle = SearchText.normalize(title), searchDirector = director?.let(SearchText::normalize),
 )
 
 private fun Trivia.toEntity() = TriviaEntity(id, movieId, kind, question, options, answerIndex, clue)

@@ -25,10 +25,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.encore.app.R
-import com.encore.app.feature.explore.ExplorePlaceholder
-import com.encore.app.ui.theme.EncoreTheme
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
+import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import com.encore.app.feature.details.MovieDetailsRoute
+import com.encore.app.feature.explore.ExploreDetailPlaceholder
+import com.encore.app.feature.explore.ExploreScreen
+import com.encore.app.feature.explore.ExploreViewModel
+import kotlinx.serialization.Serializable
+
+/** Explore tab back-stack keys. Serializable so the stack survives process death. */
+@Serializable
+data object ExploreHome : NavKey
+
+@Serializable
+data class MovieDetailsKey(val movieId: String) : NavKey
 
 enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int) {
     Explore(R.string.nav_explore, R.drawable.ic_explore),
@@ -40,12 +63,19 @@ enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val i
 /**
  * App shell. NavigationSuiteScaffold reads the window size class and shows a bottom bar
  * on compact widths and a navigation rail from 600 dp (P8). Settings opens from the top bar
- * of every destination and covers the shell until Back. [movieCount] comes from the local catalog.
+ * of every destination and covers the shell until Back.
+ *
+ * Each tab keeps its place: its back stack lives here, and its UI state (scroll, fields) is saved
+ * under the tab's key in [tabStates] while another tab is shown.
  */
 @Composable
-fun EncoreApp(movieCount: Int) {
+fun EncoreApp() {
     var current by rememberSaveable { mutableStateOf(Destination.Explore) }
     var settingsOpen by rememberSaveable { mutableStateOf(false) }
+    val exploreBackStack = rememberNavBackStack(ExploreHome)
+    // Activity-scoped: search, filters and results survive tab switches and rotation.
+    val exploreViewModel: ExploreViewModel = viewModel(factory = ExploreViewModel.Factory)
+    val tabStates = rememberSaveableStateHolder()
 
     if (settingsOpen) {
         BackHandler { settingsOpen = false }
@@ -58,7 +88,11 @@ fun EncoreApp(movieCount: Int) {
             Destination.entries.forEach { dest ->
                 item(
                     selected = dest == current,
-                    onClick = { current = dest },
+                    onClick = {
+                        // Re-selecting Explore returns it to its root, like other Android apps.
+                        if (dest == current && dest == Destination.Explore) exploreBackStack.popToRoot()
+                        current = dest
+                    },
                     // The label below names the item, so the icon is decorative.
                     icon = { Icon(painterResource(dest.icon), contentDescription = null) },
                     label = { Text(stringResource(dest.label)) },
@@ -71,20 +105,90 @@ fun EncoreApp(movieCount: Int) {
             navigationRailContainerColor = MaterialTheme.colorScheme.surface,
         ),
     ) {
-        EncoreScreen(title = stringResource(current.label), onSettings = { settingsOpen = true }) { contentModifier ->
-            if (current == Destination.Explore) ExplorePlaceholder(movieCount, contentModifier) else ComingSoon(contentModifier)
+        val canGoBack = current == Destination.Explore && exploreBackStack.size > 1
+        EncoreScreen(
+            title = stringResource(current.label),
+            onSettings = { settingsOpen = true },
+            onBack = if (canGoBack) ({ exploreBackStack.removeLastOrNull() }) else null,
+        ) { contentModifier ->
+            tabStates.SaveableStateProvider(current.name) {
+                when (current) {
+                    Destination.Explore -> ExploreNavHost(exploreBackStack, exploreViewModel, contentModifier)
+                    else -> ComingSoon(contentModifier)
+                }
+            }
         }
     }
 }
 
+private fun NavBackStack<NavKey>.popToRoot() {
+    while (size > 1) removeLastOrNull()
+}
+
+/**
+ * Explore → Details. On wide windows the list-detail scene shows both panes side by side
+ * (Details replaces the placeholder); on compact windows Details covers the list. Back pops either way.
+ */
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@Composable
+private fun ExploreNavHost(backStack: NavBackStack<NavKey>, viewModel: ExploreViewModel, modifier: Modifier) {
+    // PopLatest: Back closes the open details even when list and detail share the screen. The default
+    // (PopUntilScaffoldValueChange) sees "list + detail" and "list + placeholder" as the same layout,
+    // so it reported nothing to pop and Back left the app.
+    val listDetail = rememberListDetailSceneStrategy<NavKey>(backNavigationBehavior = BackNavigationBehavior.PopLatest)
+    NavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        sceneStrategies = listOf(listDetail),
+        entryProvider = entryProvider {
+            entry<ExploreHome>(metadata = ListDetailSceneStrategy.listPane(detailPlaceholder = { ExploreDetailPlaceholder() })) {
+                val state by viewModel.uiState.collectAsStateWithLifecycle()
+                ExploreScreen(
+                    state = state,
+                    onQueryChange = viewModel::onQueryChange,
+                    onGenreSelected = viewModel::onGenreSelected,
+                    onSortSelected = viewModel::onSortSelected,
+                    onClearFilters = viewModel::clearFilters,
+                    onRetry = viewModel::retry,
+                    onMovieClick = { id ->
+                        // In two-pane mode a new pick replaces the open details instead of stacking up.
+                        if (backStack.lastOrNull() is MovieDetailsKey) backStack.removeLastOrNull()
+                        backStack.add(MovieDetailsKey(id))
+                    },
+                )
+            }
+            entry<MovieDetailsKey>(metadata = ListDetailSceneStrategy.detailPane()) { key ->
+                MovieDetailsRoute(key.movieId)
+            }
+        },
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EncoreScreen(title: String, onSettings: () -> Unit, content: @Composable (Modifier) -> Unit) {
+private fun EncoreScreen(
+    title: String,
+    onSettings: () -> Unit,
+    onBack: (() -> Unit)?,
+    content: @Composable (Modifier) -> Unit,
+) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(title) },
+                navigationIcon = {
+                    if (onBack != null) {
+                        IconButton(onClick = onBack) {
+                            Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.action_back))
+                        }
+                    }
+                },
                 actions = {
                     IconButton(onClick = onSettings) {
                         Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.action_settings))
@@ -93,6 +197,7 @@ private fun EncoreScreen(title: String, onSettings: () -> Unit, content: @Compos
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
                     actionIconContentColor = MaterialTheme.colorScheme.primary,
                 ),
             )
@@ -136,22 +241,4 @@ private fun ComingSoon(modifier: Modifier = Modifier) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
-}
-
-@Preview(name = "Phone light")
-@Composable
-private fun EncoreAppPreview() {
-    EncoreTheme(darkTheme = false) { EncoreApp(movieCount = 1234) }
-}
-
-@Preview(name = "Phone dark")
-@Composable
-private fun EncoreAppDarkPreview() {
-    EncoreTheme(darkTheme = true) { EncoreApp(movieCount = 1234) }
-}
-
-@Preview(name = "Tablet", widthDp = 840, heightDp = 600)
-@Composable
-private fun EncoreAppTabletPreview() {
-    EncoreTheme(darkTheme = false) { EncoreApp(movieCount = 1234) }
 }

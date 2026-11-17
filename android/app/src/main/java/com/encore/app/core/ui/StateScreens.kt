@@ -76,6 +76,30 @@ fun MessageState(
     }
 }
 
+/**
+ * The same message inside an app screen (below the top bar): no Spark mark and no window insets,
+ * because the surrounding Scaffold already handles them.
+ */
+@Composable
+fun InlineMessage(
+    title: String,
+    body: String,
+    modifier: Modifier = Modifier,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
+) {
+    Column(
+        modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        StateText(title, body)
+        if (actionLabel != null && onAction != null) {
+            Spacer(Modifier.height(24.dp))
+            Button(onClick = onAction, modifier = Modifier.heightIn(min = 48.dp)) { Text(actionLabel) }
+        }
+    }
+}
+
 @Composable
 private fun StateLayout(modifier: Modifier, content: @Composable () -> Unit) {
     Surface(modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {

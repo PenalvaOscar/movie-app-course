@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="explore_search_label">Search title or director</string>
+    <string name="explore_search_clear">Clear search</string>
+    <string name="explore_genre_all">All genres</string>
+    <string name="explore_genres_label">Filter by genre</string>
+    <string name="explore_sort_label">Sort order: %1$s</string>
+    <string name="explore_sort_popularity">Most popular</string>
+    <string name="explore_sort_rating">Highest rated</string>
+    <string name="explore_sort_newest">Newest</string>
+    <string name="explore_sort_title">Title A–Z</string>
+    <plurals name="explore_result_count">
+        <item quantity="one">%1$s movie</item>
+        <item quantity="other">%1$s movies</item>
+    </plurals>
+    <string name="explore_featured_label">Featured today</string>
+    <string name="explore_featured_action">View details</string>
+    <string name="explore_empty_title">No movies match</string>
+    <string name="explore_empty_body">Try another title or director, or clear the filters.</string>
+    <string name="explore_empty_action">Clear filters</string>
+    <string name="explore_error_title">Couldn’t read the catalog</string>
+    <string name="explore_error_body">Something went wrong reading the movies stored on this device.</string>
+    <string name="explore_detail_placeholder">Select a movie to see its details.</string>
+    <string name="movie_rating_value">★ %1$s</string>
+    <string name="movie_rating_description">Source rating %1$s out of 10</string>
+    <string name="movie_open_details">Open details</string>
+</resources>

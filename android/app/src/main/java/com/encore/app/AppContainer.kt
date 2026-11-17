@@ -7,6 +7,7 @@ import com.encore.app.core.data.catalog.CatalogRepository
 import com.encore.app.core.data.catalog.DownloadCatalogSource
 import com.encore.app.core.data.catalog.db.CatalogDatabase
 import com.encore.app.core.data.catalog.db.RoomCatalogStore
+import com.encore.app.core.data.catalog.db.RoomMovieCatalog
 import kotlinx.coroutines.Dispatchers
 
 /** Manual dependency wiring (A5): one instance per process, owned by [EncoreApplication]. */
@@ -23,4 +24,6 @@ class AppContainer(context: Context) {
             log = { Log.i("EncoreCatalog", it) },
         )
     }
+
+    val movieCatalog by lazy { RoomMovieCatalog(catalogDatabase) }
 }
