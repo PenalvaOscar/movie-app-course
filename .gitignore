@@ -1,0 +1,15 @@
+/data/*
+!/data/README.md
+!/data/SOURCE-ATTRIBUTION.md
+node_modules/
+.env*
+.vercel/
+**/build/
+.gradle/
+.kotlin/
+local.properties
+.idea/
+*.iml
+.DS_Store
+dist/
+__pycache__/
