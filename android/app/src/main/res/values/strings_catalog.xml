@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_loading_title">Setting up your catalog</string>
+    <string name="catalog_loading_body">This happens only once. After that, Encore works offline.</string>
+    <string name="catalog_setup_title">Initial data setup needed</string>
+    <string name="catalog_error_title">Couldn’t load the catalog</string>
+    <string name="catalog_problem_offline">Encore downloads its movie catalog once, then works offline. Connect to the internet and try again.</string>
+    <string name="catalog_problem_server">The catalog server answered with an error. Try again in a moment.</string>
+    <string name="catalog_problem_invalid">The catalog data arrived incomplete or damaged. Try again. If it keeps happening, the catalog source needs fixing.</string>
+    <string name="catalog_problem_storage">Encore couldn’t save the catalog on this device. Free up some storage and try again.</string>
+    <string name="action_retry">Try again</string>
+    <plurals name="explore_movie_count">
+        <item quantity="one">%1$s movie in your catalog</item>
+        <item quantity="other">%1$s movies in your catalog</item>
+    </plurals>
+</resources>

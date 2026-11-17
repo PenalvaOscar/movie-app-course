@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="catalog_loading_title">Preparando tu catálogo</string>
+    <string name="catalog_loading_body">Solo ocurre una vez. Después, Encore funciona sin conexión.</string>
+    <string name="catalog_setup_title">Falta configurar los datos iniciales</string>
+    <string name="catalog_error_title">No se pudo cargar el catálogo</string>
+    <string name="catalog_problem_offline">Encore descarga su catálogo de películas una sola vez y después funciona sin conexión. Conéctate a internet y vuelve a intentarlo.</string>
+    <string name="catalog_problem_server">El servidor del catálogo respondió con un error. Vuelve a intentarlo en un momento.</string>
+    <string name="catalog_problem_invalid">Los datos del catálogo llegaron incompletos o dañados. Vuelve a intentarlo. Si sigue pasando, hay que corregir la fuente del catálogo.</string>
+    <string name="catalog_problem_storage">Encore no pudo guardar el catálogo en este dispositivo. Libera espacio y vuelve a intentarlo.</string>
+    <string name="action_retry">Reintentar</string>
+    <plurals name="explore_movie_count">
+        <item quantity="one">%1$s película en tu catálogo</item>
+        <item quantity="many">%1$s películas en tu catálogo</item>
+        <item quantity="other">%1$s películas en tu catálogo</item>
+    </plurals>
+</resources>

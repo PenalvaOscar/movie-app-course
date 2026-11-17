@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.encore.app.feature.catalog.CatalogGate
 import com.encore.app.ui.navigation.EncoreApp
 import com.encore.app.ui.theme.EncoreTheme
 
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EncoreTheme {
-                EncoreApp()
+                CatalogGate { movieCount -> EncoreApp(movieCount) }
             }
         }
     }

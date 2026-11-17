@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.encore.app.R
+import com.encore.app.feature.explore.ExplorePlaceholder
 import com.encore.app.ui.theme.EncoreTheme
 
 enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int) {
@@ -39,10 +40,10 @@ enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val i
 /**
  * App shell. NavigationSuiteScaffold reads the window size class and shows a bottom bar
  * on compact widths and a navigation rail from 600 dp (P8). Settings opens from the top bar
- * of every destination and covers the shell until Back.
+ * of every destination and covers the shell until Back. [movieCount] comes from the local catalog.
  */
 @Composable
-fun EncoreApp() {
+fun EncoreApp(movieCount: Int) {
     var current by rememberSaveable { mutableStateOf(Destination.Explore) }
     var settingsOpen by rememberSaveable { mutableStateOf(false) }
 
@@ -70,13 +71,15 @@ fun EncoreApp() {
             navigationRailContainerColor = MaterialTheme.colorScheme.surface,
         ),
     ) {
-        EncoreScreen(title = stringResource(current.label), onSettings = { settingsOpen = true })
+        EncoreScreen(title = stringResource(current.label), onSettings = { settingsOpen = true }) { contentModifier ->
+            if (current == Destination.Explore) ExplorePlaceholder(movieCount, contentModifier) else ComingSoon(contentModifier)
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EncoreScreen(title: String, onSettings: () -> Unit) {
+private fun EncoreScreen(title: String, onSettings: () -> Unit, content: @Composable (Modifier) -> Unit) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
@@ -95,7 +98,7 @@ private fun EncoreScreen(title: String, onSettings: () -> Unit) {
             )
         },
     ) { padding ->
-        ComingSoon(Modifier.padding(padding))
+        content(Modifier.padding(padding))
     }
 }
 
@@ -138,17 +141,17 @@ private fun ComingSoon(modifier: Modifier = Modifier) {
 @Preview(name = "Phone light")
 @Composable
 private fun EncoreAppPreview() {
-    EncoreTheme(darkTheme = false) { EncoreApp() }
+    EncoreTheme(darkTheme = false) { EncoreApp(movieCount = 1234) }
 }
 
 @Preview(name = "Phone dark")
 @Composable
 private fun EncoreAppDarkPreview() {
-    EncoreTheme(darkTheme = true) { EncoreApp() }
+    EncoreTheme(darkTheme = true) { EncoreApp(movieCount = 1234) }
 }
 
 @Preview(name = "Tablet", widthDp = 840, heightDp = 600)
 @Composable
 private fun EncoreAppTabletPreview() {
-    EncoreTheme(darkTheme = false) { EncoreApp() }
+    EncoreTheme(darkTheme = false) { EncoreApp(movieCount = 1234) }
 }

@@ -13,3 +13,6 @@ local.properties
 .DS_Store
 dist/
 __pycache__/
+# Workshop archives and the generated Android catalog asset (never committed)
+*.zip
+android/app/src/main/assets/catalog/
