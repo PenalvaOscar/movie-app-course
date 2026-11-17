@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encore — Explore (Desktop Web)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #F0F5FD;
+      color: #0F172A;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-[1024px]" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Desktop Global Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-blue-100 px-8 py-3.5 shadow-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-6">
+      
+      <!-- Brand Logo + Navigation Links -->
+      <div class="flex items-center gap-10">
+        <a href="ExploreDesktopScreen.html" class="flex items-center gap-2.5">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+            <path d="M 12 36 L 12 19.5 A 7.5 7.5 0 0 1 19.5 12 L 36 12" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round"></path>
+            <path d="M 64 12 L 80.5 12 A 7.5 7.5 0 0 1 88 19.5 L 88 36" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round"></path>
+            <path d="M 88 64 L 88 80.5 A 7.5 7.5 0 0 1 80.5 88 L 64 88" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round"></path>
+            <path d="M 36 88 L 19.5 88 A 7.5 7.5 0 0 1 12 80.5 L 12 64" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round"></path>
+            <path d="M 50 26 Q 50 50 74 50 Q 50 50 50 74 Q 50 50 26 50 Q 50 50 50 26 Z" fill="#F5A524"></path>
+          </svg>
+          <span class="font-poppins font-extrabold text-2xl tracking-tight text-blue-950">ENCORE</span>
+        </a>
+
+        <!-- Desktop Navigation Destinations -->
+        <nav class="flex items-center gap-1">
+          <a href="ExploreDesktopScreen.html" class="px-4 py-2 rounded-xl bg-blue-100 text-blue-700 font-poppins font-bold text-xs flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="8.75" stroke="#1D4ED8" stroke-width="2.15"></circle>
+              <polygon points="12,5.5 15,12 12,14" fill="#F5A524"></polygon>
+            </svg>
+            Explore
+          </a>
+          <a href="../swipe-desktop/SwipeDesktopScreen.html" class="px-4 py-2 rounded-xl text-slate-600 hover:text-blue-700 hover:bg-blue-50 font-poppins font-medium text-xs flex items-center gap-2 transition">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="7" y="4" width="12" height="15" rx="2.5"></rect>
+            </svg>
+            Swipe
+          </a>
+          <a href="../genie-desktop/GenieDesktopScreen.html" class="px-4 py-2 rounded-xl text-slate-600 hover:text-blue-700 hover:bg-blue-50 font-poppins font-medium text-xs flex items-center gap-2 transition">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3 Q12 9 18 9 Q12 9 12 15 Q12 9 6 9 Q12 9 12 3 Z"></path>
+            </svg>
+            Genie Recommendations
+          </a>
+          <a href="../arcade/ArcadeScreen.html" class="px-4 py-2 rounded-xl text-slate-600 hover:text-blue-700 hover:bg-blue-50 font-poppins font-medium text-xs flex items-center gap-2 transition">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="6" width="18" height="12" rx="3"></rect>
+            </svg>
+            Arcade
+          </a>
+        </nav>
+      </div>
+
+      <!-- Search + Language + Settings -->
+      <div class="flex items-center gap-4">
+        <!-- Wide Search Input -->
+        <div class="relative w-80">
+          <svg class="absolute left-3.5 top-2.5 text-blue-600" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+            <path d="M20 20 L16 16" stroke="#F5A524" stroke-width="2.2" stroke-linecap="round"></path>
+          </svg>
+          <input type="text" placeholder="Search films, directors, genres..." class="w-full bg-blue-50/60 border border-blue-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 font-medium">
+        </div>
+
+        <!-- Offline Status Badge -->
+        <span class="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Catalog Offline Synced
+        </span>
+
+        <!-- Settings Button -->
+        <button aria-label="Settings" class="w-9 h-9 rounded-xl bg-white border border-blue-200 flex items-center justify-center hover:bg-blue-50 transition shadow-xs">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="3" stroke="#F5A524" stroke-width="2"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Desktop Main Content Area -->
+  <main class="max-w-7xl mx-auto px-8 py-8 flex-1 space-y-8 w-full">
+
+    <!-- Hero Featured Spotlight Banner (Desktop Layout) -->
+    <section class="rounded-3xl bg-white border border-blue-200 p-8 shadow-sm relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+      
+      <!-- Text & Meta -->
+      <div class="flex-1 space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200 text-xs font-mono font-bold uppercase tracking-wider">
+            Spotlight Selection of the Day
+          </span>
+          <span class="text-xs font-mono text-slate-500 font-semibold">• Cannes Grand Prix 2024</span>
+        </div>
+
+        <h1 class="text-4xl lg:text-5xl font-poppins font-extrabold text-blue-950 tracking-tight leading-tight">
+          Solaris Ascendant
+        </h1>
+
+        <div class="flex items-center gap-4 text-xs font-mono text-slate-600">
+          <span class="text-blue-600 font-bold">Dir. Aura Vance</span>
+          <span>•</span>
+          <span>142 Minutes</span>
+          <span>•</span>
+          <span>35mm Anamorphic</span>
+          <span>•</span>
+          <span class="px-2 py-0.5 rounded bg-blue-50 text-blue-800 font-bold border border-blue-200">★ 8.8 CinemaScore</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed max-w-2xl">
+          Stationed above an uncharted ocean planet, astrophysicist Dr. Caleb Ward begins detecting non-linear acoustic pulses. What begins as an exploration of cosmic radio anomalies turns into an uncanny confrontation with physical projections of his buried grief.
+        </p>
+
+        <div class="flex items-center gap-4 pt-2">
+          <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-blue-600 hover:bg-blue-700 text-white font-poppins font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-2 shadow-md shadow-blue-500/20 transition">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Open Complete Film Dossier
+          </a>
+          <button class="bg-blue-50 hover:bg-blue-100 text-blue-900 font-poppins font-semibold px-5 py-3 rounded-xl text-xs border border-blue-200 transition">
+            Watch 4K Trailer
+          </button>
+          <button aria-label="Favorite film" class="w-11 h-11 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center hover:bg-rose-100 transition">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 19.5 L10.5 18.2 C5.8 14 3 11.4 3 8.2 C3 5.5 5.1 3.5 7.8 3.5 C9.3 3.5 10.8 4.2 12 5.4 C13.2 4.2 14.7 3.5 16.2 3.5 C18.9 3.5 21 5.5 21 8.2 C21 11.4 18.2 14 13.5 18.2 L12 19.5 Z" fill="#EF4444" stroke="#EF4444" stroke-width="1.8"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Poster Art Box -->
+      <div class="w-64 aspect-[2/3] rounded-3xl bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-950 p-6 flex flex-col justify-between text-white shadow-xl border border-blue-300 flex-shrink-0 relative overflow-hidden">
+        <span class="text-xs font-bold text-amber-300 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full self-start font-mono">★ 8.8 / 10</span>
+        <div class="z-10">
+          <div class="text-xs font-mono text-cyan-200 mb-1">Dir. Aura Vance</div>
+          <div class="text-lg font-poppins font-bold leading-tight">SOLARIS ASCENDANT</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Filter & Sort Bar -->
+    <section class="flex items-center justify-between bg-white border border-blue-100 p-4 rounded-2xl shadow-xs">
+      <!-- Genre Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto text-xs">
+        <button class="px-4 py-2 rounded-xl bg-blue-600 text-white font-poppins font-bold shadow-sm">All Genres</button>
+        <button class="px-4 py-2 rounded-xl bg-blue-50 text-blue-900 hover:bg-blue-100 font-medium">Sci-Fi &amp; Mystery</button>
+        <button class="px-4 py-2 rounded-xl bg-blue-50 text-blue-900 hover:bg-blue-100 font-medium">Film Noir</button>
+        <button class="px-4 py-2 rounded-xl bg-blue-50 text-blue-900 hover:bg-blue-100 font-medium">Psychological Drama</button>
+        <button class="px-4 py-2 rounded-xl bg-blue-50 text-blue-900 hover:bg-blue-100 font-medium">Festival Retrospectives</button>
+      </div>
+
+      <!-- Sort Controls -->
+      <div class="flex items-center gap-3 text-xs font-mono text-slate-500">
+        <span>Sort By:</span>
+        <select class="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-xs text-blue-900 font-semibold focus:outline-none">
+          <option>Highest Rated (CinemaScore)</option>
+          <option>Release Year (Newest First)</option>
+          <option>Director Alphabetical</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- 6-Column Desktop Poster Grid -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-poppins font-bold text-slate-900">Curated Film Library</h2>
+        <span class="text-xs font-mono text-blue-600 font-semibold">Showing 48 Titles in Vault</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+        
+        <!-- Movie 1 -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-blue-500 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-gradient-to-br from-blue-900 to-indigo-950 p-3 text-white flex flex-col justify-between">
+            <span class="text-[10px] font-bold bg-blue-600 px-2 py-0.5 rounded text-white self-start font-mono">8.5</span>
+            <div>
+              <div class="text-[10px] font-mono text-cyan-200">K. Sato</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-blue-200 transition">NEON HORIZON</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-blue-600 transition truncate">Neon Horizon</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">2023 • 118 min</div>
+          </div>
+        </a>
+
+        <!-- Movie 2 (Procedural Fallback) -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-amber-400 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-blue-50/50 p-3 border border-dashed border-blue-300 text-slate-800 flex flex-col justify-between">
+            <span class="text-[9px] font-mono text-blue-700 font-bold bg-blue-100 px-1.5 py-0.5 rounded self-start">Archive Card</span>
+            <div class="flex flex-col items-center justify-center my-auto opacity-50">
+              <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="30" stroke="#1D4ED8" stroke-width="4"></circle>
+                <path d="M 50 20 L 50 80 M 20 50 L 80 50" stroke="#F5A524" stroke-width="3"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-[10px] font-mono text-slate-500">M. Thorne</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-amber-600 transition">THE GLASS REEL</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-amber-600 transition truncate">The Glass Reel</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">1964 • 94 min</div>
+          </div>
+        </a>
+
+        <!-- Movie 3 -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-blue-500 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-gradient-to-br from-slate-900 via-blue-950 to-blue-900 p-3 text-white flex flex-col justify-between">
+            <span class="text-[10px] font-bold bg-blue-600 px-2 py-0.5 rounded text-white self-start font-mono">9.1</span>
+            <div>
+              <div class="text-[10px] font-mono text-amber-200">H. Cruz</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-blue-200 transition">SHADOWS IN RAIN</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-blue-600 transition truncate">Shadows in Rain</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">1952 • 102 min</div>
+          </div>
+        </a>
+
+        <!-- Movie 4 -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-blue-500 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-gradient-to-br from-indigo-950 via-blue-900 to-sky-950 p-3 text-white flex flex-col justify-between">
+            <span class="text-[10px] font-bold bg-blue-600 px-2 py-0.5 rounded text-white self-start font-mono">8.4</span>
+            <div>
+              <div class="text-[10px] font-mono text-emerald-200">J. Santos</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-blue-200 transition">VERDANT LIGHT</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-blue-600 transition truncate">Verdant Light</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">1978 • 126 min</div>
+          </div>
+        </a>
+
+        <!-- Movie 5 -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-blue-500 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-gradient-to-br from-blue-950 to-slate-900 p-3 text-white flex flex-col justify-between">
+            <span class="text-[10px] font-bold bg-blue-600 px-2 py-0.5 rounded text-white self-start font-mono">8.9</span>
+            <div>
+              <div class="text-[10px] font-mono text-cyan-200">A. Ward</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-blue-200 transition">TESSERACT REEL</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-blue-600 transition truncate">The Tesseract Reel</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">2023 • 150 min</div>
+          </div>
+        </a>
+
+        <!-- Movie 6 -->
+        <a href="../details-desktop/MovieDetailsDesktopScreen.html" class="bg-white p-3 rounded-2xl border border-blue-100 shadow-xs hover:border-blue-500 hover:shadow-md transition flex flex-col gap-2.5 group">
+          <div class="aspect-[2/3] rounded-xl bg-gradient-to-br from-amber-950 to-slate-900 p-3 text-white flex flex-col justify-between">
+            <span class="text-[10px] font-bold bg-blue-600 px-2 py-0.5 rounded text-white self-start font-mono">8.6</span>
+            <div>
+              <div class="text-[10px] font-mono text-amber-200">V. Lindelöf</div>
+              <div class="text-xs font-poppins font-bold leading-tight group-hover:text-blue-200 transition">SILENT FREQUENCIES</div>
+            </div>
+          </div>
+          <div class="px-0.5">
+            <h3 class="text-xs font-poppins font-bold text-slate-900 group-hover:text-blue-600 transition truncate">Silent Frequencies</h3>
+            <div class="text-[10px] font-mono text-slate-500 mt-0.5">2022 • 110 min</div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white border-t border-blue-100 py-6 px-8 mt-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-xs font-mono text-slate-500">
+      <div>Encore Cinema Platform • Desktop Web Edition</div>
+      <div>Poppins &amp; Montserrat • Android M3 Architecture</div>
+    </div>
+  </footer>
+
+
+
+</body></html>

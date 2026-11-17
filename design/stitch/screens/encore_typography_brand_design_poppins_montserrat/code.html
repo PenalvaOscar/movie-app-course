@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encore — Typography Brand Design</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #F0F5FD;
+      color: #0F172A;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
+    .board-card {
+      background: #FFFFFF;
+      border: 1px solid #DBEAFE;
+      border-radius: 1.5rem;
+      padding: 2.25rem;
+      box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.06);
+    }
+  </style>
+</head>
+<body class="p-6 md:p-12 space-y-12">
+
+  <!-- Header -->
+  <header class="max-w-6xl mx-auto border-b border-blue-200 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        <!-- Spark Logo -->
+        <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+          <path d="M 12 36 L 12 19.5 A 7.5 7.5 0 0 1 19.5 12 L 36 12" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 64 12 L 80.5 12 A 7.5 7.5 0 0 1 88 19.5 L 88 36" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 88 64 L 88 80.5 A 7.5 7.5 0 0 1 80.5 88 L 64 88" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 36 88 L 19.5 88 A 7.5 7.5 0 0 1 12 80.5 L 12 64" stroke="#1D4ED8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 50 26 Q 50 50 74 50 Q 50 50 50 74 Q 50 50 26 50 Q 50 50 50 26 Z" fill="#F5A524"/>
+        </svg>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-blue-700 bg-blue-100 px-3 py-1 rounded-full border border-blue-300">Brand Typography Spec</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-poppins font-extrabold text-blue-950 tracking-tight">
+        Typography Brand Design
+      </h1>
+      <p class="text-slate-600 text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
+        A warm, friendly cinema brand pairing: geometric rounded <strong>Poppins</strong> for expressive display titles &amp; hero headings, paired with sturdy, open <strong>Montserrat</strong> for microcopy and UI precision.
+      </p>
+    </div>
+    <div class="flex items-center gap-2 text-xs font-mono bg-blue-600 text-white font-semibold px-4 py-2 rounded-xl shadow-md shadow-blue-500/20">
+      SIL Open Font License 1.1 (Google Fonts)
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto space-y-12">
+
+    <!-- FONT PAIRING SHOWCASE -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Primary Display: Poppins -->
+      <section class="board-card border-blue-300">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold text-blue-600 uppercase tracking-wider">Display &amp; Headings</span>
+          <span class="text-[11px] font-mono bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">Google Fonts</span>
+        </div>
+        <h2 class="text-4xl font-poppins font-bold text-slate-900 tracking-tight">
+          Poppins
+        </h2>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Geometric sans with friendly circular bowls and warm, approachable letterforms. Perfectly echoes the circular camera aperture and the Spark viewfinder's 7.5-unit rounded corners.
+        </p>
+
+        <!-- Poppins Weights Showcase -->
+        <div class="mt-6 space-y-3 pt-4 border-t border-slate-100">
+          <div class="flex items-baseline justify-between">
+            <span class="text-sm font-poppins font-semibold text-slate-800">Poppins SemiBold 600</span>
+            <span class="text-[11px] font-mono text-slate-400">Section Titles &amp; Cards</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <span class="text-lg font-poppins font-bold text-blue-900">Poppins Bold 700</span>
+            <span class="text-[11px] font-mono text-slate-400">Screen Titles &amp; Headlines</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-poppins font-extrabold text-blue-600">Poppins ExtraBold 800</span>
+            <span class="text-[11px] font-mono text-slate-400">App Name &amp; Big Scores</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100">
+          <a href="https://fonts.google.com/specimen/Poppins" target="_blank" class="text-xs font-mono font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+            fonts.google.com/specimen/Poppins →
+          </a>
+        </div>
+      </section>
+
+      <!-- Primary UI: Montserrat -->
+      <section class="board-card border-blue-300">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold text-amber-600 uppercase tracking-wider">UI, Navigation &amp; Body</span>
+          <span class="text-[11px] font-mono bg-amber-50 text-amber-800 px-2.5 py-0.5 rounded-full border border-amber-200">Google Fonts</span>
+        </div>
+        <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">
+          Montserrat
+        </h2>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Inspired by the historic signage and posters of Buenos Aires. Generous x-height, wide open counters, and high horizontal rhythm for maximum legibility across dense movie metadata and button controls.
+        </p>
+
+        <!-- Montserrat Weights Showcase -->
+        <div class="mt-6 space-y-3 pt-4 border-t border-slate-100">
+          <div class="flex items-baseline justify-between">
+            <span class="text-xs font-normal text-slate-700">Montserrat Regular 400</span>
+            <span class="text-[11px] font-mono text-slate-400">Body Copy &amp; Synopses</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <span class="text-sm font-medium text-slate-800">Montserrat Medium 500</span>
+            <span class="text-[11px] font-mono text-slate-400">Cast, Director &amp; Chips</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <span class="text-base font-bold text-blue-900">Montserrat SemiBold 600</span>
+            <span class="text-[11px] font-mono text-slate-400">Navigation &amp; Action Buttons</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100">
+          <a href="https://fonts.google.com/specimen/Montserrat" target="_blank" class="text-xs font-mono font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+            fonts.google.com/specimen/Montserrat →
+          </a>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- TYPE SCALE & ANDROID 200% ACCESSIBILITY TEST -->
+    <section class="board-card">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-blue-600">Material 3 Type System</span>
+          <h3 class="text-2xl font-poppins font-bold text-slate-900 mt-0.5">Encore Type Scale Specification</h3>
+        </div>
+        <span class="text-xs font-mono bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-300 font-bold">
+          ✓ Verified at 200% Text Scale
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-blue-200 text-slate-500 font-mono">
+              <th class="py-3 pr-4">Token Level</th>
+              <th class="py-3 px-4">Font Family</th>
+              <th class="py-3 px-4">Size / Line Height</th>
+              <th class="py-3 px-4">Weight</th>
+              <th class="py-3 pl-4">Interactive Preview</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-blue-100 text-slate-800">
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-blue-600">Display Large</td>
+              <td class="py-3 px-4">Poppins</td>
+              <td class="py-3 px-4 font-mono">32 sp / 40 sp</td>
+              <td class="py-3 px-4 font-mono">800 (ExtraBold)</td>
+              <td class="py-3 pl-4 font-poppins font-extrabold text-2xl text-blue-950">Cinema Auteurs</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-blue-600">Headline Medium</td>
+              <td class="py-3 px-4">Poppins</td>
+              <td class="py-3 px-4 font-mono">24 sp / 32 sp</td>
+              <td class="py-3 px-4 font-mono">700 (Bold)</td>
+              <td class="py-3 pl-4 font-poppins font-bold text-lg text-slate-900">Solaris Ascendant</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-blue-600">Title Medium</td>
+              <td class="py-3 px-4">Poppins</td>
+              <td class="py-3 px-4 font-mono">16 sp / 24 sp</td>
+              <td class="py-3 px-4 font-mono">600 (SemiBold)</td>
+              <td class="py-3 pl-4 font-poppins font-semibold text-sm text-slate-900">Curated Film Selection</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-slate-700">Body Large</td>
+              <td class="py-3 px-4">Montserrat</td>
+              <td class="py-3 px-4 font-mono">14 sp / 20 sp</td>
+              <td class="py-3 px-4 font-mono">400 (Regular)</td>
+              <td class="py-3 pl-4 text-xs text-slate-700 leading-relaxed">A luminous exploration of physical consciousness aboard a deep-space station.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-slate-700">Label Medium</td>
+              <td class="py-3 px-4">Montserrat</td>
+              <td class="py-3 px-4 font-mono">12 sp / 16 sp</td>
+              <td class="py-3 px-4 font-mono">600 (SemiBold)</td>
+              <td class="py-3 pl-4 font-semibold text-xs text-blue-700">EXPLORE DOSSIER</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono font-bold text-slate-700">Label Small</td>
+              <td class="py-3 px-4">Montserrat</td>
+              <td class="py-3 px-4 font-mono">10 sp / 14 sp</td>
+              <td class="py-3 px-4 font-mono">500 (Medium)</td>
+              <td class="py-3 pl-4 font-medium text-[10px] font-mono text-slate-500">DIR. AURA VANCE • 2024 • 142 MIN</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MULTILINGUAL DIACRITICS COVERAGE (EN, ES, DE, PT) -->
+    <section class="board-card">
+      <div class="flex items-center gap-2 mb-2 text-xs font-mono uppercase tracking-wider text-blue-700 font-bold">
+        <span>Latin Extended Validation</span> • <span>4 UI Languages</span>
+      </div>
+      <h3 class="text-xl font-poppins font-bold text-slate-900 mb-4">Diacritics &amp; Special Glyphs Guarantee</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200">
+          <div class="font-bold text-blue-900 mb-1 flex items-center justify-between">
+            <span>German (Deutsch) Diacritics: ä, ö, ü, ß, Ä, Ö, Ü</span>
+            <span class="text-[10px] font-mono text-emerald-700 font-bold">✓ Rendered</span>
+          </div>
+          <p class="text-slate-700 leading-relaxed">
+            <em>"Überwältigende französische Filmklassiker &amp; außergewöhnliche Regisseure im großen Kinosall."</em>
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200">
+          <div class="font-bold text-blue-900 mb-1 flex items-center justify-between">
+            <span>Portuguese (Português) Diacritics: ã, õ, ç, á, é, í, ó, ú</span>
+            <span class="text-[10px] font-mono text-emerald-700 font-bold">✓ Rendered</span>
+          </div>
+          <p class="text-slate-700 leading-relaxed">
+            <em>"Ação, ficção científica &amp; animação com emoção inesquecível de diretores consagrados."</em>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="max-w-6xl mx-auto pt-6 border-t border-blue-200 flex justify-between items-center text-xs font-mono text-slate-500">
+    <div>Encore Typography Brand Standards</div>
+    <div>Poppins &amp; Montserrat • Google Fonts OFL</div>
+  </footer>
+
+</body>
+</html>
