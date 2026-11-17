@@ -1,15 +1,36 @@
 package com.encore.app.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.encore.app.R
 
-// DESIGN.md §4. Poppins (display) and Montserrat (body) TTFs are not bundled yet;
-// both families fall back to the system sans-serif until they land in res/font.
-val DisplayFamily: FontFamily = FontFamily.SansSerif
-val BodyFamily: FontFamily = FontFamily.SansSerif
+// DESIGN.md §4. Both fonts are bundled in res/font (SIL OFL 1.1, texts in assets/licenses/), so they work offline.
+// Poppins ships as static files for the three weights we use.
+val DisplayFamily = FontFamily(
+    Font(R.font.poppins_semibold, FontWeight.SemiBold),
+    Font(R.font.poppins_bold, FontWeight.Bold),
+    Font(R.font.poppins_extrabold, FontWeight.ExtraBold),
+)
+
+// Montserrat is one variable file; each Font entry pins the 'wght' axis to its weight.
+@OptIn(ExperimentalTextApi::class)
+private fun montserrat(weight: FontWeight) = Font(
+    R.font.montserrat_variable,
+    weight,
+    variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
+)
+
+val BodyFamily = FontFamily(
+    montserrat(FontWeight.Normal),
+    montserrat(FontWeight.Medium),
+    montserrat(FontWeight.SemiBold),
+)
 
 private val Base = Typography()
 
