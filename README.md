@@ -2,6 +2,8 @@
 
 At [Master.dev](https://master.dev) · By [Maximiliano Firtman](https://firt.dev)
 
+[Workshop slides (PDF)](slides/MasterDev-AgenticMobile.pdf)
+
 An unnamed, offline-capable film discovery app where people explore a catalog, swipe to record preferences, get personal recommendations, and play cinema games. Use the naming and design prompts below to define the app’s identity.
 
 This repository contains a UX brief, design prompts, and a local Node.js catalog API. Catalog data is downloaded during setup rather than bundled in the repository. Android and iOS are independent native apps using their respective SDKs.
