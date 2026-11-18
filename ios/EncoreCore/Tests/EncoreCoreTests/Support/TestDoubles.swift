@@ -25,8 +25,15 @@ final class FakeMovieCatalog: MovieCatalog {
     var featured: [MovieSummary]
     var details: [String: Movie]
     var features: [MovieFeatures] = []
+    var trivia: [Trivia] = []
     var failWith: (any Error)?
+    /// When set, `recommendationFeatures()` waits for it to open (counted before waiting).
+    var featureGate: Gate?
+    /// Each `summaries(ids:)` call takes the next gate, if any, and waits for it.
+    var summariesGates: [Gate] = []
     private(set) var queries: [MovieQuery] = []
+    private(set) var featureLoads = 0
+    private(set) var triviaLoads = 0
 
     init(
         movies: [MovieSummary] = [],
@@ -70,14 +77,42 @@ final class FakeMovieCatalog: MovieCatalog {
     }
 
     func summaries(ids: [String]) async throws -> [MovieSummary] {
+        if !summariesGates.isEmpty { await summariesGates.removeFirst().wait() }
         if let failWith { throw failWith }
         let wanted = Set(ids)
         return movies.filter { wanted.contains($0.id) }
     }
 
     func recommendationFeatures() async throws -> [MovieFeatures] {
+        featureLoads += 1
+        if let featureGate { await featureGate.wait() }
         if let failWith { throw failWith }
         return features
+    }
+
+    func triviaQuestions() async throws -> [Trivia] {
+        triviaLoads += 1
+        if let failWith { throw failWith }
+        return trivia
+    }
+}
+
+/// A one-shot latch: `wait()` suspends until `open()`; after that it returns at once.
+@MainActor
+final class Gate {
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+    private var isOpen = false
+
+    func wait() async {
+        if isOpen { return }
+        await withCheckedContinuation { waiters.append($0) }
+    }
+
+    func open() {
+        isOpen = true
+        let pending = waiters
+        waiters.removeAll()
+        pending.forEach { $0.resume() }
     }
 }
 

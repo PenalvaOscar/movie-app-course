@@ -111,6 +111,8 @@ public struct CatalogSnapshot: MovieCatalog {
 
     public func recommendationFeatures() -> [MovieFeatures] { features }
 
+    public func triviaQuestions() -> [Trivia] { trivia }
+
     private func order(_ sort: MovieSort) -> [Int] {
         switch sort {
         case .popularity: byPopularity

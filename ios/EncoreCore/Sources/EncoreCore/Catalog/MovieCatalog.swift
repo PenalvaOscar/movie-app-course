@@ -39,4 +39,7 @@ public protocol MovieCatalog: Sendable {
 
     /// Genres, director, cast and popularity of every movie: Genie's input.
     func recommendationFeatures() async throws -> [MovieFeatures]
+
+    /// Every validated trivia question: Trivia's input. Each one's movie is in the catalog.
+    func triviaQuestions() async throws -> [Trivia]
 }
