@@ -9,7 +9,7 @@ Status values: **Decided** (owner or repo rule), **Source** (taken from the Stit
 | # | Decision | Source |
 |---|---|---|
 | D1 | App name is **Encore** | AGENTS.md |
-| D2 | Android only in this repo, under `android/`; iOS lives in its own repo | AGENTS.md |
+| D2 | One repo (`movie-app-course`, renamed from `movie-app-android`) for both apps: Android under `android/`, iOS under `ios/` (plan: `docs/IOS-PLAN.md`) | Owner, 2026-11-18 (supersedes "iOS in its own repo") |
 | D3 | `main` for development; `initial-state` baseline never changed or force-pushed | AGENTS.md |
 | D4 | No push, remote creation or GitHub publication until the owner asks | AGENTS.md |
 | D5 | No implementation or development plan until the owner authorizes it | AGENTS.md |
@@ -65,10 +65,11 @@ Status values: **Decided** (owner or repo rule), **Source** (taken from the Stit
 | Fabricated titles, ratings and posters from the mockups (e.g. "The Labyrinth of Glass", 8.7) | Violates D10; placeholders only |
 | Tailwind/HTML from the mockups as production code | Reference only; Android uses Compose |
 | Loading fonts from Google's CDN at runtime | Offline requirement (D9) |
-| Web/desktop layouts | Android app only (D2) |
+| Web/desktop layouts | Mobile apps only (D2) |
 
 ## 6. Change log
 
 | Date | Change |
 |---|---|
 | 2026-11-17 | Stitch zip extracted to `design/stitch/screens/`; DESIGN.md, ICONS.md, DECISIONS.md created. Nothing committed |
+| 2026-11-18 | D2 changed: iOS joins this repo under `ios/`; repo renamed to `movie-app-course`; iOS plan in `docs/IOS-PLAN.md` |
