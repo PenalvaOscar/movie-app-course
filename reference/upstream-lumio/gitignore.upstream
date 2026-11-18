@@ -1,0 +1,41 @@
+/data/*
+!/data/README.md
+!/data/SOURCE-ATTRIBUTION.md
+node_modules/
+.env*
+.vercel/
+**/build/
+.gradle/
+.kotlin/
+local.properties
+.idea/
+*.iml
+.DS_Store
+dist/
+__pycache__/
+
+# Local Stitch screen exports may contain movie/poster imagery.
+/design/stitch/13911445762657244453/screens/
+
+# Android signing material
+*.jks
+*.keystore
+
+# Explore and details validation captures may include supplied movie/poster imagery.
+/validation/screenshots/stage-1/
+/validation/screenshots/stage-2/
+
+# Swipe validation captures contain supplied poster imagery.
+/validation/screenshots/stage-3/
+
+# History validation captures contain supplied poster imagery.
+/validation/screenshots/stage-4/
+
+# Genie captures contain supplied poster imagery.
+/validation/screenshots/stage-5/
+
+# Arcade/Trivia captures may contain supplied trivia data.
+/validation/screenshots/stage-6/
+
+# Poster Puzzle captures contain supplied poster imagery.
+/validation/screenshots/stage-7/
