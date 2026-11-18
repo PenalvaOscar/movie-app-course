@@ -116,4 +116,30 @@ class RoomMovieCatalogTest {
         assertEquals(movies[0].copy(genres = listOf("Comedy", "Romance")), loaded)
         assertNull(catalog.movie("missing"))
     }
+
+    @Test
+    fun recommendationFeaturesCoverEveryMovieWithGenresAndCastInBillingOrder() = runBlocking {
+        val features = catalog.recommendationFeatures().associateBy { it.id }
+
+        assertEquals(setOf("a", "b", "c", "d"), features.keys)
+        val a = features.getValue("a")
+        assertEquals(setOf("Comedy", "Romance"), a.genres.toSet()) // genre order carries no meaning
+        assertEquals("Pia Núñez", a.director)
+        assertEquals(listOf("Bo Lin", "Cy Moss"), a.cast)
+        assertEquals(9.0, a.popularity!!, 0.0)
+        assertNull(features.getValue("c").director)
+        assertNull(features.getValue("c").popularity)
+    }
+
+    @Test
+    fun recommendationFeaturesOfAMovieWithoutGenresOrCastAreEmpty() = runBlocking {
+        RoomCatalogStore(db).replaceCatalog(
+            CatalogImport(listOf(movie("bare", "Bare").copy(cast = emptyList())), emptyList(), 0, 0),
+            CatalogOrigin.ASSET,
+        ) {}
+
+        val bare = catalog.recommendationFeatures().single()
+        assertEquals(emptyList<String>(), bare.genres)
+        assertEquals(emptyList<String>(), bare.cast)
+    }
 }

@@ -1,6 +1,7 @@
 package com.encore.app.core.data.catalog
 
 import com.encore.app.core.model.Movie
+import com.encore.app.core.recommendation.MovieFeatures
 import java.text.Normalizer
 import java.util.Locale
 
@@ -43,6 +44,9 @@ interface MovieCatalog {
 
     /** Cards for [ids], in no particular order. Ids no longer in the catalog are simply absent (O6). */
     suspend fun summaries(ids: Collection<String>): List<MovieSummary>
+
+    /** Genres, director, cast and popularity of every movie, read in one consistent snapshot: Genie's input. */
+    suspend fun recommendationFeatures(): List<MovieFeatures>
 }
 
 /**

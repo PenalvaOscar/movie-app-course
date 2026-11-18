@@ -4,6 +4,8 @@ import com.encore.app.core.data.catalog.MovieCatalog
 import com.encore.app.core.data.catalog.MovieQuery
 import com.encore.app.core.data.catalog.MovieSummary
 import com.encore.app.core.model.Movie
+import com.encore.app.core.recommendation.MovieFeatures
+import kotlinx.coroutines.CompletableDeferred
 
 /** In-memory catalog with fictional data; records every query it receives. */
 class FakeMovieCatalog(
@@ -11,8 +13,12 @@ class FakeMovieCatalog(
     var genreList: List<String> = emptyList(),
     var featuredCandidates: List<MovieSummary> = emptyList(),
     var details: Map<String, Movie> = emptyMap(),
+    var features: List<MovieFeatures> = emptyList(),
 ) : MovieCatalog {
     val queries = mutableListOf<MovieQuery>()
+    var featureLoads = 0
+    /** When set, [recommendationFeatures] suspends until it completes: a slow first read. */
+    var featureGate: CompletableDeferred<Unit>? = null
     var failWith: Exception? = null
 
     override suspend fun genres(): List<String> {
@@ -46,6 +52,13 @@ class FakeMovieCatalog(
         failWith?.let { throw it }
         val wanted = ids.toSet()
         return movies.filter { it.id in wanted }
+    }
+
+    override suspend fun recommendationFeatures(): List<MovieFeatures> {
+        featureLoads++
+        featureGate?.await()
+        failWith?.let { throw it }
+        return features
     }
 }
 

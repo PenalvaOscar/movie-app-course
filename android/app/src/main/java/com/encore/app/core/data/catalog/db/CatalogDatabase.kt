@@ -24,6 +24,7 @@ import com.encore.app.core.data.catalog.MovieSummary
 import com.encore.app.core.data.catalog.SearchText
 import com.encore.app.core.model.Movie
 import com.encore.app.core.model.Trivia
+import com.encore.app.core.recommendation.MovieFeatures
 import kotlinx.serialization.json.Json
 
 /*
@@ -165,6 +166,16 @@ interface CatalogDao {
     @Query("SELECT id, title, year, director, rating, posterUrl FROM movies WHERE id IN (:ids)")
     suspend fun summaries(ids: List<String>): List<MovieSummary>
 
+    // Genie reads every movie's features at once (about 10k movies, 26k genre rows); three flat scans beat 10k lookups.
+    @Query("SELECT id, director, popularity FROM movies")
+    suspend fun featureRows(): List<MovieFeatureRow>
+
+    @Query("SELECT movieId, genre FROM movie_genres")
+    suspend fun allGenres(): List<MovieGenreEntity>
+
+    @Query("SELECT movieId, position, actor FROM movie_cast ORDER BY movieId, position")
+    suspend fun allCast(): List<MovieCastEntity>
+
     @Insert suspend fun insertMovies(rows: List<MovieEntity>)
     @Insert suspend fun insertGenres(rows: List<MovieGenreEntity>)
     @Insert suspend fun insertCast(rows: List<MovieCastEntity>)
@@ -177,6 +188,9 @@ interface CatalogDao {
     @Query("DELETE FROM movie_genres") suspend fun clearGenres()
     @Query("DELETE FROM movies") suspend fun clearMovies()
 }
+
+/** The movies columns scoring needs; genres and cast are joined in from their own tables. */
+data class MovieFeatureRow(val id: String, val director: String?, val popularity: Double?)
 
 private const val EXPLORE_WHERE =
     "WHERE (:genre IS NULL OR id IN (SELECT movieId FROM movie_genres WHERE genre = :genre)) " +
@@ -246,7 +260,7 @@ class RoomCatalogStore(
 private const val SQL_VARIABLE_CHUNK = 500
 
 /** Explore, Details, Swipe and History read the catalog through here; all queries run on Room's own executor. */
-class RoomMovieCatalog(db: CatalogDatabase) : MovieCatalog {
+class RoomMovieCatalog(private val db: CatalogDatabase) : MovieCatalog {
     private val dao = db.catalogDao()
 
     override suspend fun genres(): List<String> = dao.genres()
@@ -268,6 +282,18 @@ class RoomMovieCatalog(db: CatalogDatabase) : MovieCatalog {
     // Chunked: API 26's SQLite allows at most 999 bound variables per statement.
     override suspend fun summaries(ids: Collection<String>): List<MovieSummary> =
         ids.distinct().chunked(SQL_VARIABLE_CHUNK).flatMap { dao.summaries(it) }
+
+    // One transaction, so a catalog replace can't land between the three reads.
+    // Names repeat a lot (about 20 genres over 26k rows), so each distinct name is kept as one shared String.
+    override suspend fun recommendationFeatures(): List<MovieFeatures> = db.withTransaction {
+        val names = HashMap<String, String>()
+        fun shared(name: String) = names.getOrPut(name) { name }
+        val genres = dao.allGenres().groupBy({ it.movieId }, { shared(it.genre) })
+        val cast = dao.allCast().groupBy({ it.movieId }, { shared(it.actor) })
+        dao.featureRows().map { row ->
+            MovieFeatures(row.id, genres[row.id].orEmpty(), row.director?.let(::shared), cast[row.id].orEmpty(), row.popularity)
+        }
+    }
 
     override suspend fun movie(id: String): Movie? {
         val row = dao.movie(id) ?: return null

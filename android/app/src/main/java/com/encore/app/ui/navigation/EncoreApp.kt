@@ -55,13 +55,16 @@ import com.encore.app.feature.swipe.SwipeViewModel
 import com.encore.app.feature.explore.ExploreDetailPlaceholder
 import com.encore.app.feature.explore.ExploreScreen
 import com.encore.app.feature.explore.ExploreViewModel
+import com.encore.app.feature.genie.GenieDetailPlaceholder
+import com.encore.app.feature.genie.GenieScreen
+import com.encore.app.feature.genie.GenieViewModel
 import kotlinx.serialization.Serializable
 
 /** Explore tab back-stack keys. Serializable so the stack survives process death. */
 @Serializable
 data object ExploreHome : NavKey
 
-/** Shared by the Explore and Swipe stacks: each tab opens details on its own stack. */
+/** Shared by the Explore, Swipe and Genie stacks: each tab opens details on its own stack. */
 @Serializable
 data class MovieDetailsKey(val movieId: String) : NavKey
 
@@ -71,6 +74,10 @@ data object SwipeHome : NavKey
 
 @Serializable
 data object HistoryKey : NavKey
+
+/** Genie tab back-stack root. */
+@Serializable
+data object GenieHome : NavKey
 
 enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int) {
     Explore(R.string.nav_explore, R.drawable.ic_explore),
@@ -93,11 +100,14 @@ fun EncoreApp() {
     var settingsOpen by rememberSaveable { mutableStateOf(false) }
     val exploreBackStack = rememberNavBackStack(ExploreHome)
     val swipeBackStack = rememberNavBackStack(SwipeHome)
+    val genieBackStack = rememberNavBackStack(GenieHome)
     // Activity-scoped: search, filters and results survive tab switches and rotation.
     val exploreViewModel: ExploreViewModel = viewModel(factory = ExploreViewModel.Factory)
     // Activity-scoped too: the top bar's Undo works from both the Swipe card and History.
     val swipeViewModel: SwipeViewModel = viewModel(factory = SwipeViewModel.Factory)
     val canUndo by swipeViewModel.canUndo.collectAsStateWithLifecycle()
+    // Activity-scoped so the picks survive tab switches; it only computes while Genie is on screen.
+    val genieViewModel: GenieViewModel = viewModel(factory = GenieViewModel.Factory)
     val tabStates = rememberSaveableStateHolder()
     val snackbar = remember { SnackbarHostState() }
     val resources = LocalResources.current
@@ -139,7 +149,8 @@ fun EncoreApp() {
                             when (dest) {
                                 Destination.Explore -> exploreBackStack.popToRoot()
                                 Destination.Swipe -> swipeBackStack.popToRoot()
-                                Destination.Genie, Destination.Arcade -> Unit
+                                Destination.Genie -> genieBackStack.popToRoot()
+                                Destination.Arcade -> Unit
                             }
                         }
                         current = dest
@@ -159,7 +170,8 @@ fun EncoreApp() {
         val stack = when (current) {
             Destination.Explore -> exploreBackStack
             Destination.Swipe -> swipeBackStack
-            Destination.Genie, Destination.Arcade -> null
+            Destination.Genie -> genieBackStack
+            Destination.Arcade -> null
         }
         val top = stack?.lastOrNull()
         EncoreScreen(
@@ -184,7 +196,17 @@ fun EncoreApp() {
                 when (current) {
                     Destination.Explore -> ExploreNavHost(exploreBackStack, exploreViewModel, contentModifier)
                     Destination.Swipe -> SwipeNavHost(swipeBackStack, swipeViewModel, contentModifier)
-                    Destination.Genie, Destination.Arcade -> ComingSoon(contentModifier)
+                    Destination.Genie -> GenieNavHost(
+                        backStack = genieBackStack,
+                        viewModel = genieViewModel,
+                        onStartSwiping = {
+                            swipeBackStack.popToRoot() // land on the card, not on History
+                            current = Destination.Swipe
+                        },
+                        onBrowseCatalog = { current = Destination.Explore },
+                        modifier = contentModifier,
+                    )
+                    Destination.Arcade -> ComingSoon(contentModifier)
                 }
             }
         }
@@ -230,6 +252,48 @@ private fun ExploreNavHost(backStack: NavBackStack<NavKey>, viewModel: ExploreVi
                         if (backStack.lastOrNull() is MovieDetailsKey) backStack.removeLastOrNull()
                         backStack.add(MovieDetailsKey(id))
                     },
+                )
+            }
+            entry<MovieDetailsKey>(metadata = ListDetailSceneStrategy.detailPane()) { key ->
+                MovieDetailsRoute(key.movieId)
+            }
+        },
+    )
+}
+
+/** Genie → Details, laid out like Explore: list and details side by side on wide windows. */
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@Composable
+private fun GenieNavHost(
+    backStack: NavBackStack<NavKey>,
+    viewModel: GenieViewModel,
+    onStartSwiping: () -> Unit,
+    onBrowseCatalog: () -> Unit,
+    modifier: Modifier,
+) {
+    // PopLatest for the same reason as in ExploreNavHost.
+    val listDetail = rememberListDetailSceneStrategy<NavKey>(backNavigationBehavior = BackNavigationBehavior.PopLatest)
+    NavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        sceneStrategies = listOf(listDetail),
+        entryProvider = entryProvider {
+            entry<GenieHome>(metadata = ListDetailSceneStrategy.listPane(detailPlaceholder = { GenieDetailPlaceholder() })) {
+                val state by viewModel.uiState.collectAsStateWithLifecycle()
+                GenieScreen(
+                    state = state,
+                    onOpenMovie = { id ->
+                        if (backStack.lastOrNull() is MovieDetailsKey) backStack.removeLastOrNull()
+                        backStack.add(MovieDetailsKey(id))
+                    },
+                    onStartSwiping = onStartSwiping,
+                    onBrowseCatalog = onBrowseCatalog,
+                    onRetry = viewModel::retry,
                 )
             }
             entry<MovieDetailsKey>(metadata = ListDetailSceneStrategy.detailPane()) { key ->

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="genie_needs_title">Genie necesita conocer tus gustos</string>
+    <string name="genie_needs_body">Marca que te gustan o no algunas películas en Deslizar o desde los detalles de cualquiera. Genie se fija en los géneros, directores y actores que te gustan, elige películas para ti y te explica por qué. Las marcadas como No vista se quedan fuera.</string>
+    <string name="genie_needs_start">Empezar a deslizar</string>
+    <string name="genie_needs_browse">Explorar películas</string>
+    <string name="genie_no_matches_title">Aún no hay recomendaciones</string>
+    <string name="genie_no_matches_body">Ninguna de las películas que no has valorado encaja todavía con lo que te gusta. Dale «me gusta» a algunas más para que Genie tenga con qué trabajar.</string>
+    <string name="genie_no_matches_action">Seguir deslizando</string>
+    <string name="genie_error_title">No se pudieron cargar tus recomendaciones</string>
+    <string name="genie_error_body">Algo falló al leer el catálogo de este dispositivo.</string>
+    <string name="genie_error_retry">Reintentar</string>
+    <string name="genie_header_title">Elegidas para ti</string>
+    <plurals name="genie_likes_count">
+        <item quantity="one">%1$s me gusta</item>
+        <item quantity="many">%1$s me gusta</item>
+        <item quantity="other">%1$s me gusta</item>
+    </plurals>
+    <plurals name="genie_dislikes_count">
+        <item quantity="one">%1$s no me gusta</item>
+        <item quantity="many">%1$s no me gusta</item>
+        <item quantity="other">%1$s no me gusta</item>
+    </plurals>
+    <string name="genie_basis_likes">Basadas en %1$s</string>
+    <string name="genie_basis_likes_dislikes">Basadas en %1$s y %2$s</string>
+    <string name="genie_reason_director">Porque te gustaron películas dirigidas por %1$s</string>
+    <string name="genie_reason_actor_one">Porque te gustaron películas con %1$s</string>
+    <string name="genie_reason_actor_two">Porque te gustaron películas con %1$s y %2$s</string>
+    <string name="genie_reason_genre_one">Porque te gustaron las películas de %1$s</string>
+    <string name="genie_reason_genre_two">Porque te gustaron las películas de %1$s y %2$s</string>
+    <string name="genie_detail_placeholder">Elige una recomendación para ver sus detalles.</string>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="genie_needs_title">Genie needs your taste</string>
+    <string name="genie_needs_body">Like or dislike a few movies in Swipe or from any movie’s details. Genie looks at the genres, directors and actors you like, picks films for you and tells you why. Movies marked Not seen stay out.</string>
+    <string name="genie_needs_start">Start swiping</string>
+    <string name="genie_needs_browse">Browse movies</string>
+    <string name="genie_no_matches_title">No picks yet</string>
+    <string name="genie_no_matches_body">None of the movies you haven’t rated match your likes yet. Like a few more to give Genie something to work with.</string>
+    <string name="genie_no_matches_action">Keep swiping</string>
+    <string name="genie_error_title">Couldn’t load your picks</string>
+    <string name="genie_error_body">Something went wrong reading this device’s catalog.</string>
+    <string name="genie_error_retry">Try again</string>
+    <string name="genie_header_title">Picked for you</string>
+    <plurals name="genie_likes_count">
+        <item quantity="one">%1$s like</item>
+        <item quantity="other">%1$s likes</item>
+    </plurals>
+    <plurals name="genie_dislikes_count">
+        <item quantity="one">%1$s dislike</item>
+        <item quantity="other">%1$s dislikes</item>
+    </plurals>
+    <string name="genie_basis_likes">Based on %1$s</string>
+    <string name="genie_basis_likes_dislikes">Based on %1$s and %2$s</string>
+    <string name="genie_reason_director">Because you liked films directed by %1$s</string>
+    <string name="genie_reason_actor_one">Because you liked films with %1$s</string>
+    <string name="genie_reason_actor_two">Because you liked films with %1$s and %2$s</string>
+    <string name="genie_reason_genre_one">Because you liked %1$s films</string>
+    <string name="genie_reason_genre_two">Because you liked %1$s and %2$s films</string>
+    <string name="genie_detail_placeholder">Pick a recommendation to see its details.</string>
+</resources>
