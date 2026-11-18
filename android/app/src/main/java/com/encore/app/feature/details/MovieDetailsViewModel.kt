@@ -7,11 +7,15 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.encore.app.EncoreApplication
 import com.encore.app.core.data.catalog.MovieCatalog
+import com.encore.app.core.data.rating.RatingRepository
+import com.encore.app.core.data.rating.RatingValue
 import com.encore.app.core.model.Movie
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 sealed interface DetailsUiState {
@@ -23,15 +27,35 @@ sealed interface DetailsUiState {
 }
 
 /** Scoped to the details back-stack entry: popping the entry clears it. */
-class MovieDetailsViewModel(private val movieId: String, private val catalog: MovieCatalog) : ViewModel() {
+class MovieDetailsViewModel(
+    private val movieId: String,
+    private val catalog: MovieCatalog,
+    private val ratings: RatingRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
     val uiState: StateFlow<DetailsUiState> = _uiState.asStateFlow()
+
+    /** The user's own rating, live: a change from Swipe, History or Undo shows here at once. */
+    val userRating: StateFlow<RatingValue?> =
+        ratings.rating(movieId).stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     init {
         load()
     }
 
     fun retry() = load()
+
+    fun setRating(value: RatingValue) {
+        viewModelScope.launch {
+            // A failed write leaves the previous selection showing, which is the truth on disk.
+            try {
+                ratings.setRating(movieId, value)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+            }
+        }
+    }
 
     private fun load() {
         _uiState.value = DetailsUiState.Loading
@@ -49,7 +73,8 @@ class MovieDetailsViewModel(private val movieId: String, private val catalog: Mo
     companion object {
         fun factory(movieId: String) = viewModelFactory {
             initializer {
-                MovieDetailsViewModel(movieId, (this[APPLICATION_KEY] as EncoreApplication).container.movieCatalog)
+                val container = (this[APPLICATION_KEY] as EncoreApplication).container
+                MovieDetailsViewModel(movieId, container.movieCatalog, container.ratingRepository)
             }
         }
     }

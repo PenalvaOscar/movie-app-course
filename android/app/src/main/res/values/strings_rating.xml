@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Actions (buttons, accessibility actions) -->
+    <string name="rating_like">Like</string>
+    <string name="rating_dislike">Dislike</string>
+    <string name="rating_unseen">Not seen</string>
+    <!-- States (history, details) -->
+    <string name="rating_state_like">Liked</string>
+    <string name="rating_state_dislike">Disliked</string>
+    <string name="rating_state_unseen">Not seen</string>
+    <string name="action_undo">Undo last rating</string>
+    <string name="action_history">Rating history</string>
+    <string name="undo_removed">Rating removed: %1$s</string>
+    <string name="undo_restored">%1$s is back to %2$s</string>
+    <string name="undo_removed_unknown">Last rating removed</string>
+    <string name="undo_restored_unknown">Last rating restored to %1$s</string>
+    <string name="rating_save_failed">Couldn’t save that. Please try again.</string>
+</resources>

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
@@ -13,8 +14,8 @@ android {
         applicationId = "com.encore.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 4
-        versionName = "0.3.0"
+        versionCode = 5
+        versionName = "0.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,6 +48,11 @@ android {
 
 ksp {
     arg("room.generateKotlin", "true")
+}
+
+// user.db schemas (one JSON per version) are committed, so future migrations can be written and tested (O4).
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 /**

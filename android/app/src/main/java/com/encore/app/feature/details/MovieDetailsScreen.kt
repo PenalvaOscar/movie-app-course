@@ -47,11 +47,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.encore.app.R
+import com.encore.app.core.data.rating.RatingValue
 import com.encore.app.core.model.Movie
 import com.encore.app.core.ui.InlineMessage
 import com.encore.app.core.ui.MoviePoster
 import com.encore.app.core.ui.POSTER_ASPECT
 import com.encore.app.core.ui.RatingBadge
+import com.encore.app.core.ui.RatingChoiceRow
 import com.encore.app.ui.theme.EncoreTheme
 import java.text.NumberFormat
 import java.time.LocalDate
@@ -63,11 +65,18 @@ import java.time.format.FormatStyle
 fun MovieDetailsRoute(movieId: String, modifier: Modifier = Modifier) {
     val viewModel: MovieDetailsViewModel = viewModel(factory = MovieDetailsViewModel.factory(movieId))
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    MovieDetailsScreen(state, onRetry = viewModel::retry, modifier = modifier)
+    val userRating by viewModel.userRating.collectAsStateWithLifecycle()
+    MovieDetailsScreen(state, userRating, onRate = viewModel::setRating, onRetry = viewModel::retry, modifier = modifier)
 }
 
 @Composable
-fun MovieDetailsScreen(state: DetailsUiState, onRetry: () -> Unit, modifier: Modifier = Modifier) {
+fun MovieDetailsScreen(
+    state: DetailsUiState,
+    userRating: RatingValue?,
+    onRate: (RatingValue) -> Unit,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     when (state) {
         DetailsUiState.Loading -> Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -84,18 +93,21 @@ fun MovieDetailsScreen(state: DetailsUiState, onRetry: () -> Unit, modifier: Mod
             onAction = onRetry,
             modifier = modifier,
         )
-        is DetailsUiState.Content -> MovieDetailsContent(state.movie, modifier)
+        is DetailsUiState.Content -> MovieDetailsContent(state.movie, userRating, onRate, modifier)
     }
 }
 
 @Composable
-private fun MovieDetailsContent(movie: Movie, modifier: Modifier) {
+private fun MovieDetailsContent(movie: Movie, userRating: RatingValue?, onRate: (RatingValue) -> Unit, modifier: Modifier) {
     Box(modifier.fillMaxSize().verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
         Column(
             Modifier.widthIn(max = 720.dp).padding(horizontal = 20.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Header(movie)
+            Section(stringResource(R.string.details_your_rating)) {
+                RatingChoiceRow(userRating, onRate, Modifier.fillMaxWidth())
+            }
             if (movie.genres.isNotEmpty()) GenreChips(movie.genres)
             Section(stringResource(R.string.details_synopsis)) {
                 Text(
@@ -281,11 +293,11 @@ private val sampleMovie = Movie(
 @Preview(name = "Details light")
 @Composable
 private fun DetailsPreview() {
-    EncoreTheme(darkTheme = false) { MovieDetailsScreen(DetailsUiState.Content(sampleMovie), onRetry = {}) }
+    EncoreTheme(darkTheme = false) { MovieDetailsScreen(DetailsUiState.Content(sampleMovie), RatingValue.LIKE, onRate = {}, onRetry = {}) }
 }
 
 @Preview(name = "Details dark, wide", widthDp = 700)
 @Composable
 private fun DetailsWidePreview() {
-    EncoreTheme(darkTheme = true) { MovieDetailsScreen(DetailsUiState.Content(sampleMovie.copy(rating = null, synopsis = "")), onRetry = {}) }
+    EncoreTheme(darkTheme = true) { MovieDetailsScreen(DetailsUiState.Content(sampleMovie.copy(rating = null, synopsis = "")), null, onRate = {}, onRetry = {}) }
 }

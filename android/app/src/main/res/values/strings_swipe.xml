@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="swipe_remaining">
+        <item quantity="one">%1$s movie left to rate</item>
+        <item quantity="other">%1$s movies left to rate</item>
+    </plurals>
+    <string name="swipe_hint_dislike">← Dislike</string>
+    <string name="swipe_hint_unseen">↓ Not seen</string>
+    <string name="swipe_hint_like">Like →</string>
+    <string name="swipe_action_dislike">Dislike (swipe left)</string>
+    <string name="swipe_action_unseen">Not seen (swipe down)</string>
+    <string name="swipe_action_like">Like (swipe right)</string>
+    <string name="swipe_open_details">Open details</string>
+    <string name="swipe_directed_by">Dir. %1$s</string>
+    <string name="swipe_all_rated_title">You’ve rated every movie</string>
+    <string name="swipe_all_rated_body">Change any rating from your history, or undo the last one.</string>
+    <string name="swipe_error_title">Couldn’t load movies</string>
+    <string name="swipe_error_body">Something went wrong reading the catalog on this device.</string>
+</resources>

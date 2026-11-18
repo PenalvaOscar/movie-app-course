@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_like">Me gusta</string>
+    <string name="rating_dislike">No me gusta</string>
+    <string name="rating_unseen">No la he visto</string>
+    <string name="rating_state_like">Te gusta</string>
+    <string name="rating_state_dislike">No te gusta</string>
+    <string name="rating_state_unseen">No vista</string>
+    <string name="action_undo">Deshacer la última valoración</string>
+    <string name="action_history">Historial de valoraciones</string>
+    <string name="undo_removed">Valoración eliminada: %1$s</string>
+    <string name="undo_restored">%1$s vuelve a «%2$s»</string>
+    <string name="undo_removed_unknown">Última valoración eliminada</string>
+    <string name="undo_restored_unknown">Última valoración restaurada a «%1$s»</string>
+    <string name="rating_save_failed">No se pudo guardar. Inténtalo de nuevo.</string>
+</resources>

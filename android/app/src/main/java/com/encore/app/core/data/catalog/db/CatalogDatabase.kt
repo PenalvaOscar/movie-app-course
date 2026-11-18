@@ -28,8 +28,7 @@ import kotlinx.serialization.json.Json
 
 /*
  * catalog.db holds only rebuildable data (O4): any schema change drops and re-imports it.
- * Ratings will live in a separate user.db (Stage 4) keyed on movieId, so a re-import never
- * touches them.
+ * Ratings live in a separate user.db keyed on movieId, so a re-import never touches them.
  */
 
 @Entity(
@@ -160,6 +159,12 @@ interface CatalogDao {
     )
     suspend fun featuredCandidates(limit: Int): List<MovieSummary>
 
+    @Query("SELECT id FROM movies ORDER BY popularity DESC, id")
+    suspend fun swipeOrder(): List<String>
+
+    @Query("SELECT id, title, year, director, rating, posterUrl FROM movies WHERE id IN (:ids)")
+    suspend fun summaries(ids: List<String>): List<MovieSummary>
+
     @Insert suspend fun insertMovies(rows: List<MovieEntity>)
     @Insert suspend fun insertGenres(rows: List<MovieGenreEntity>)
     @Insert suspend fun insertCast(rows: List<MovieCastEntity>)
@@ -238,7 +243,9 @@ class RoomCatalogStore(
     }
 }
 
-/** Explore and Details read the catalog through here; all queries run on Room's own executor. */
+private const val SQL_VARIABLE_CHUNK = 500
+
+/** Explore, Details, Swipe and History read the catalog through here; all queries run on Room's own executor. */
 class RoomMovieCatalog(db: CatalogDatabase) : MovieCatalog {
     private val dao = db.catalogDao()
 
@@ -255,6 +262,12 @@ class RoomMovieCatalog(db: CatalogDatabase) : MovieCatalog {
     }
 
     override suspend fun featuredCandidates(limit: Int): List<MovieSummary> = dao.featuredCandidates(limit)
+
+    override suspend fun swipeOrder(): List<String> = dao.swipeOrder()
+
+    // Chunked: API 26's SQLite allows at most 999 bound variables per statement.
+    override suspend fun summaries(ids: Collection<String>): List<MovieSummary> =
+        ids.distinct().chunked(SQL_VARIABLE_CHUNK).flatMap { dao.summaries(it) }
 
     override suspend fun movie(id: String): Movie? {
         val row = dao.movie(id) ?: return null

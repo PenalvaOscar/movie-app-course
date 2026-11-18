@@ -5,6 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // Light tokens: DESIGN.md §3 (from source).
@@ -54,15 +57,53 @@ private val EncoreDarkColors = darkColorScheme(
     error = Color(0xFFF87171), // [Assumption]
 )
 
+/**
+ * Like / Dislike / Not seen (DESIGN.md §3). [*Content] colors carry icons and text and meet 4.5:1 on
+ * the surface (P3: #047857 and #DC2626, not the brighter fills); [*Border] colors are decorative rings.
+ * Color is never the only signal: every use pairs it with a distinct glyph and a label.
+ */
+@Immutable
+data class RatingColors(
+    val likeContent: Color,
+    val likeBorder: Color,
+    val dislikeContent: Color,
+    val dislikeBorder: Color,
+    val unseenContent: Color,
+    val unseenBorder: Color,
+)
+
+private val LightRatingColors = RatingColors(
+    likeContent = Color(0xFF047857),
+    likeBorder = Color(0xFF6EE7B7),
+    dislikeContent = Color(0xFFDC2626),
+    dislikeBorder = Color(0xFFFCA5A5),
+    unseenContent = Color(0xFF1D4ED8),
+    unseenBorder = Color(0xFF93C5FD),
+)
+
+// [Assumption] Dark values are not in the source: lighter tints of the same hues for contrast on #1E1E24.
+private val DarkRatingColors = RatingColors(
+    likeContent = Color(0xFF34D399),
+    likeBorder = Color(0xFF047857),
+    dislikeContent = Color(0xFFF87171),
+    dislikeBorder = Color(0xFFB91C1C),
+    unseenContent = Color(0xFF60A5FA),
+    unseenBorder = Color(0xFF1D4ED8),
+)
+
+val LocalRatingColors = staticCompositionLocalOf { LightRatingColors }
+
 @Composable
 fun EncoreTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    MaterialTheme(
-        colorScheme = if (darkTheme) EncoreDarkColors else EncoreLightColors,
-        typography = EncoreTypography,
-        shapes = EncoreShapes,
-        content = content,
-    )
+    CompositionLocalProvider(LocalRatingColors provides if (darkTheme) DarkRatingColors else LightRatingColors) {
+        MaterialTheme(
+            colorScheme = if (darkTheme) EncoreDarkColors else EncoreLightColors,
+            typography = EncoreTypography,
+            shapes = EncoreShapes,
+            content = content,
+        )
+    }
 }

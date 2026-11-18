@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_title">Historial</string>
+    <string name="history_filter_all">Todas</string>
+    <string name="history_filter_count">%1$s (%2$s)</string>
+    <string name="history_empty_title">Aún no hay valoraciones</string>
+    <string name="history_empty_body">Desliza o valora una película desde sus detalles y aparecerá aquí.</string>
+    <string name="history_empty_filtered_title">No hay nada aquí</string>
+    <string name="history_empty_filtered_body">Ninguna película tiene esta valoración.</string>
+    <string name="history_error_title">No se pudo cargar tu historial</string>
+    <string name="history_error_body">Algo falló al leerlo en este dispositivo.</string>
+</resources>

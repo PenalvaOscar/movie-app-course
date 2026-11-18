@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="swipe_remaining">
+        <item quantity="one">Te queda %1$s película por valorar</item>
+        <item quantity="many">Te quedan %1$s películas por valorar</item>
+        <item quantity="other">Te quedan %1$s películas por valorar</item>
+    </plurals>
+    <string name="swipe_hint_dislike">← No me gusta</string>
+    <string name="swipe_hint_unseen">↓ No vista</string>
+    <string name="swipe_hint_like">Me gusta →</string>
+    <string name="swipe_action_dislike">No me gusta (desliza a la izquierda)</string>
+    <string name="swipe_action_unseen">No la he visto (desliza hacia abajo)</string>
+    <string name="swipe_action_like">Me gusta (desliza a la derecha)</string>
+    <string name="swipe_open_details">Ver detalles</string>
+    <string name="swipe_directed_by">Dir. %1$s</string>
+    <string name="swipe_all_rated_title">Has valorado todas las películas</string>
+    <string name="swipe_all_rated_body">Cambia cualquier valoración desde tu historial o deshaz la última.</string>
+    <string name="swipe_error_title">No se pudieron cargar las películas</string>
+    <string name="swipe_error_body">Algo falló al leer el catálogo en este dispositivo.</string>
+</resources>

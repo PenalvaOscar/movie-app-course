@@ -7,6 +7,7 @@
         <item quantity="other">%1$s votos</item>
     </plurals>
     <string name="details_rating_caption">Valoración de la fuente (media de votos), no la tuya</string>
+    <string name="details_your_rating">Tu valoración</string>
     <string name="details_synopsis">Sinopsis</string>
     <string name="details_no_synopsis">La fuente no incluye sinopsis.</string>
     <string name="details_director">Dirección</string>

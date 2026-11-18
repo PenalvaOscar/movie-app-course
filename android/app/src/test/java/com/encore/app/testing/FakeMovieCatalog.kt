@@ -35,6 +35,18 @@ class FakeMovieCatalog(
         failWith?.let { throw it }
         return details[id]
     }
+
+    /** [movies] in list order stand for "most popular first". */
+    override suspend fun swipeOrder(): List<String> {
+        failWith?.let { throw it }
+        return movies.map { it.id }
+    }
+
+    override suspend fun summaries(ids: Collection<String>): List<MovieSummary> {
+        failWith?.let { throw it }
+        val wanted = ids.toSet()
+        return movies.filter { it.id in wanted }
+    }
 }
 
 fun summary(id: String, title: String = "Film $id") =

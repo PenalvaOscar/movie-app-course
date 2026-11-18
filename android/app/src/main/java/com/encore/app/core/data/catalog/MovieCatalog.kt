@@ -37,6 +37,12 @@ interface MovieCatalog {
     suspend fun featuredCandidates(limit: Int): List<MovieSummary>
 
     suspend fun movie(id: String): Movie?
+
+    /** Every movie id, most popular first (then id): the Swipe queue before rated movies are removed. */
+    suspend fun swipeOrder(): List<String>
+
+    /** Cards for [ids], in no particular order. Ids no longer in the catalog are simply absent (O6). */
+    suspend fun summaries(ids: Collection<String>): List<MovieSummary>
 }
 
 /**

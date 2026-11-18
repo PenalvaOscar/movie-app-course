@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -12,17 +13,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.encore.app.R
@@ -40,7 +46,12 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.encore.app.core.ui.stateLabel
 import com.encore.app.feature.details.MovieDetailsRoute
+import com.encore.app.feature.history.HistoryRoute
+import com.encore.app.feature.swipe.SwipeMessage
+import com.encore.app.feature.swipe.SwipeScreen
+import com.encore.app.feature.swipe.SwipeViewModel
 import com.encore.app.feature.explore.ExploreDetailPlaceholder
 import com.encore.app.feature.explore.ExploreScreen
 import com.encore.app.feature.explore.ExploreViewModel
@@ -50,8 +61,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object ExploreHome : NavKey
 
+/** Shared by the Explore and Swipe stacks: each tab opens details on its own stack. */
 @Serializable
 data class MovieDetailsKey(val movieId: String) : NavKey
+
+/** Swipe tab back-stack keys. */
+@Serializable
+data object SwipeHome : NavKey
+
+@Serializable
+data object HistoryKey : NavKey
 
 enum class Destination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int) {
     Explore(R.string.nav_explore, R.drawable.ic_explore),
@@ -73,9 +92,35 @@ fun EncoreApp() {
     var current by rememberSaveable { mutableStateOf(Destination.Explore) }
     var settingsOpen by rememberSaveable { mutableStateOf(false) }
     val exploreBackStack = rememberNavBackStack(ExploreHome)
+    val swipeBackStack = rememberNavBackStack(SwipeHome)
     // Activity-scoped: search, filters and results survive tab switches and rotation.
     val exploreViewModel: ExploreViewModel = viewModel(factory = ExploreViewModel.Factory)
+    // Activity-scoped too: the top bar's Undo works from both the Swipe card and History.
+    val swipeViewModel: SwipeViewModel = viewModel(factory = SwipeViewModel.Factory)
+    val canUndo by swipeViewModel.canUndo.collectAsStateWithLifecycle()
     val tabStates = rememberSaveableStateHolder()
+    val snackbar = remember { SnackbarHostState() }
+    val resources = LocalResources.current
+
+    // Undo feedback as a snackbar, which TalkBack also announces.
+    LaunchedEffect(swipeViewModel) {
+        swipeViewModel.messages.collect { message ->
+            val text = when (message) {
+                is SwipeMessage.Undone -> {
+                    val restored = message.restored?.let { resources.getString(it.stateLabel) }
+                    when {
+                        message.title != null && restored != null -> resources.getString(R.string.undo_restored, message.title, restored)
+                        message.title != null -> resources.getString(R.string.undo_removed, message.title)
+                        restored != null -> resources.getString(R.string.undo_restored_unknown, restored)
+                        else -> resources.getString(R.string.undo_removed_unknown)
+                    }
+                }
+                SwipeMessage.SaveFailed -> resources.getString(R.string.rating_save_failed)
+            }
+            snackbar.currentSnackbarData?.dismiss()
+            snackbar.showSnackbar(text)
+        }
+    }
 
     if (settingsOpen) {
         BackHandler { settingsOpen = false }
@@ -89,8 +134,14 @@ fun EncoreApp() {
                 item(
                     selected = dest == current,
                     onClick = {
-                        // Re-selecting Explore returns it to its root, like other Android apps.
-                        if (dest == current && dest == Destination.Explore) exploreBackStack.popToRoot()
+                        // Re-selecting a tab returns it to its root, like other Android apps.
+                        if (dest == current) {
+                            when (dest) {
+                                Destination.Explore -> exploreBackStack.popToRoot()
+                                Destination.Swipe -> swipeBackStack.popToRoot()
+                                Destination.Genie, Destination.Arcade -> Unit
+                            }
+                        }
                         current = dest
                     },
                     // The label below names the item, so the icon is decorative.
@@ -105,16 +156,35 @@ fun EncoreApp() {
             navigationRailContainerColor = MaterialTheme.colorScheme.surface,
         ),
     ) {
-        val canGoBack = current == Destination.Explore && exploreBackStack.size > 1
+        val stack = when (current) {
+            Destination.Explore -> exploreBackStack
+            Destination.Swipe -> swipeBackStack
+            Destination.Genie, Destination.Arcade -> null
+        }
+        val top = stack?.lastOrNull()
         EncoreScreen(
-            title = stringResource(current.label),
+            title = stringResource(if (top == HistoryKey) R.string.history_title else current.label),
             onSettings = { settingsOpen = true },
-            onBack = if (canGoBack) ({ exploreBackStack.removeLastOrNull() }) else null,
+            onBack = if (stack != null && stack.size > 1) ({ stack.removeLastOrNull() }) else null,
+            snackbarHostState = snackbar,
+            actions = {
+                if (top == SwipeHome || top == HistoryKey) {
+                    IconButton(onClick = swipeViewModel::undo, enabled = canUndo) {
+                        Icon(painterResource(R.drawable.ic_undo), contentDescription = stringResource(R.string.action_undo))
+                    }
+                }
+                if (top == SwipeHome) {
+                    IconButton(onClick = { swipeBackStack.add(HistoryKey) }) {
+                        Icon(painterResource(R.drawable.ic_history), contentDescription = stringResource(R.string.action_history))
+                    }
+                }
+            },
         ) { contentModifier ->
             tabStates.SaveableStateProvider(current.name) {
                 when (current) {
                     Destination.Explore -> ExploreNavHost(exploreBackStack, exploreViewModel, contentModifier)
-                    else -> ComingSoon(contentModifier)
+                    Destination.Swipe -> SwipeNavHost(swipeBackStack, swipeViewModel, contentModifier)
+                    Destination.Genie, Destination.Arcade -> ComingSoon(contentModifier)
                 }
             }
         }
@@ -169,16 +239,48 @@ private fun ExploreNavHost(backStack: NavBackStack<NavKey>, viewModel: ExploreVi
     )
 }
 
+/** Swipe → History → Details, and Swipe → Details (tap the card). Single pane at every width. */
+@Composable
+private fun SwipeNavHost(backStack: NavBackStack<NavKey>, viewModel: SwipeViewModel, modifier: Modifier) {
+    val openDetails = { id: String -> backStack.add(MovieDetailsKey(id)) }
+    NavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        entryProvider = entryProvider {
+            entry<SwipeHome> {
+                val state by viewModel.uiState.collectAsStateWithLifecycle()
+                SwipeScreen(
+                    state = state,
+                    onRate = viewModel::rate,
+                    onOpenDetails = { openDetails(it) },
+                    onOpenHistory = { backStack.add(HistoryKey) },
+                    onRetry = viewModel::retry,
+                )
+            }
+            entry<HistoryKey> { HistoryRoute(onOpenMovie = { openDetails(it) }) }
+            entry<MovieDetailsKey> { key -> MovieDetailsRoute(key.movieId) }
+        },
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EncoreScreen(
     title: String,
     onSettings: () -> Unit,
     onBack: (() -> Unit)?,
+    snackbarHostState: SnackbarHostState,
+    actions: @Composable RowScope.() -> Unit,
     content: @Composable (Modifier) -> Unit,
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(title) },
@@ -190,6 +292,7 @@ private fun EncoreScreen(
                     }
                 },
                 actions = {
+                    actions()
                     IconButton(onClick = onSettings) {
                         Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.action_settings))
                     }

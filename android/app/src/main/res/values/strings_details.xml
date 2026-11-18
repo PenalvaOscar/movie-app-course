@@ -6,6 +6,7 @@
         <item quantity="other">%1$s votes</item>
     </plurals>
     <string name="details_rating_caption">Source rating (vote average), not your own</string>
+    <string name="details_your_rating">Your rating</string>
     <string name="details_synopsis">Synopsis</string>
     <string name="details_no_synopsis">No synopsis in the source data.</string>
     <string name="details_director">Director</string>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_title">History</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_filter_count">%1$s (%2$s)</string>
+    <string name="history_empty_title">No ratings yet</string>
+    <string name="history_empty_body">Swipe, or rate a movie from its details, and it will show up here.</string>
+    <string name="history_empty_filtered_title">Nothing here</string>
+    <string name="history_empty_filtered_body">No movies have this rating.</string>
+    <string name="history_error_title">Couldn’t load your history</string>
+    <string name="history_error_body">Something went wrong reading it from this device.</string>
+</resources>
