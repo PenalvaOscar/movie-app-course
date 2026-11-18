@@ -1,6 +1,6 @@
 # Encore iOS app: implementation plan
 
-Status: **draft for owner approval** (2026-11-18). This plan authorizes no code: AGENTS.md requires the owner's go before implementation starts.
+Status: **approved by the owner** (2026-11-18). Each stage still starts only on the owner's go. Open questions in §7 stay open until answered.
 
 Repository: the iOS app lives in the **same repository as the Android app**, under `ios/`, next to `android/` (owner decision, 2026-11-18). The repository is being renamed from `movie-app-android` to **`movie-app-course`**, locally and on GitHub. Paths in this file are relative to the repo root.
 

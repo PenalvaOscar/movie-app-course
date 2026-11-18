@@ -16,3 +16,12 @@ __pycache__/
 # Workshop archives and the generated Android catalog asset (never committed)
 *.zip
 android/app/src/main/assets/catalog/
+# iOS (docs/IOS-PLAN.md): SwiftPM/Xcode build output, per-user Xcode state,
+# local config, and any generated catalog copy (test fixtures stay tracked)
+ios/**/.build/
+ios/**/DerivedData/
+xcuserdata/
+*.xcuserstate
+ios/Encore/Config/Local.xcconfig
+ios/**/catalog.json
+!ios/EncoreCore/Tests/Fixtures/**
