@@ -1,0 +1,8 @@
+{"movies":[{"id":"m1","title":"The Lantern Keeper","year":1999,"synopsis":"A keeper.",
+  "genres":["Drama","Mystery"],"director":"Ada Vale","cast":["Bo Lin","Cy Moss"],
+  "runtime":112,"rating":7.8,"posterUrl":"https://example.test/p.jpg",
+  "backdropUrl":"https://example.test/b.jpg","sourceUrl":"https://example.test/m1",
+  "releaseDate":"1999-05-01","voteCount":321,"popularity":12.5,"originalLanguage":"en",
+  "datasetSourceUrl":"https://example.test/ds"}],
+ "trivia":[{"id":"t1","movieId":"m1","kind":"plot","question":"Which film?",
+  "options":["A","B","C","D"],"answerIndex":2,"clue":"Light"}]}
