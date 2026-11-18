@@ -113,3 +113,33 @@ final class ManualSleeper {
 func settle(_ rounds: Int = 20) async {
     for _ in 0..<rounds { await Task.yield() }
 }
+
+/// A millisecond clock the test sets; `step` advances it after every read (Android's `now++`).
+@MainActor
+final class TestClock {
+    var now: Int64
+    let step: Int64
+
+    init(_ now: Int64, step: Int64 = 0) {
+        self.now = now
+        self.step = step
+    }
+
+    func read() -> Int64 {
+        defer { now += step }
+        return now
+    }
+}
+
+/// Waits until `condition` holds, polling every millisecond, for at most `timeout`.
+/// Returns whether it held, so a lost update fails the test instead of hanging it.
+@MainActor
+func eventually(timeout: Duration = .seconds(2), _ condition: @MainActor () -> Bool) async -> Bool {
+    let clock = ContinuousClock()
+    let deadline = clock.now + timeout
+    while clock.now < deadline {
+        if condition() { return true }
+        try? await Task.sleep(for: .milliseconds(1))
+    }
+    return condition()
+}

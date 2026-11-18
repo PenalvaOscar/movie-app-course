@@ -141,18 +141,20 @@ import Testing
     }
 }
 
-/// Port of the catalog half of Android `MovieDetailsViewModelTest` (3). The two rating cases arrive with Stage 2.
+/// Port of the catalog half of Android `MovieDetailsViewModelTest` (3). The two rating cases are in `DetailsRatingTests`.
 @MainActor
 @Suite struct DetailsModelTests {
+    private let ratings = RatingRepository(store: InMemoryRatingStore(), clock: { 1 })
+
     @Test func loadsTheMovieById() async {
-        let vm = DetailsModel(movieId: "7", catalog: FakeMovieCatalog(details: ["7": movie("7")]))
+        let vm = DetailsModel(movieId: "7", catalog: FakeMovieCatalog(details: ["7": movie("7")]), ratings: ratings)
         #expect(vm.state == .loading)
         await vm.loadTask?.value
         #expect(vm.state == .content(movie("7")))
     }
 
     @Test func aMovieThatIsNoLongerInTheCatalogShowsNotFound() async {
-        let vm = DetailsModel(movieId: "gone", catalog: FakeMovieCatalog())
+        let vm = DetailsModel(movieId: "gone", catalog: FakeMovieCatalog(), ratings: ratings)
         await vm.loadTask?.value
         #expect(vm.state == .notFound)
     }
@@ -160,7 +162,7 @@ import Testing
     @Test func aReadFailureShowsTheErrorAndRetryRecovers() async {
         let catalog = FakeMovieCatalog(details: ["7": movie("7")])
         catalog.failWith = TestError()
-        let vm = DetailsModel(movieId: "7", catalog: catalog)
+        let vm = DetailsModel(movieId: "7", catalog: catalog, ratings: ratings)
         await vm.loadTask?.value
         #expect(vm.state == .error)
 
@@ -174,7 +176,7 @@ import Testing
     @Test func sourceLinksComeFromTheLoadedMovie() async {
         var m = movie("7")
         m.datasetSourceUrl = "https://www.kaggle.com/datasets/x/y"
-        let vm = DetailsModel(movieId: "7", catalog: FakeMovieCatalog(details: ["7": m]))
+        let vm = DetailsModel(movieId: "7", catalog: FakeMovieCatalog(details: ["7": m]), ratings: ratings)
         await vm.loadTask?.value
         #expect(vm.sources.map(\.kind) == [.wikipedia, .kaggle])
     }
